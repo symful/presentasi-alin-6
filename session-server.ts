@@ -44,13 +44,19 @@ async function change(m: Record<string, unknown>) {
     let tx = kv.atomic().check(root).set(rootKey, { parts: parts.length });
     for (let i = 0; i < parts.length; i++) tx = tx.set(partKey(i), parts[i]);
     for (let i = parts.length; i < (root.value?.parts || 0); i++) tx = tx.delete(partKey(i));
-    if ((await tx.commit()).ok) return;
+    if ((await tx.commit()).ok) return r;
   }
   throw Error("Kontrol sedang sibuk; coba kembali.");
 }
-async function broadcast() {
+let presence = { hosts: 0, presenters: 0 };
+async function broadcast(updated?: Shared) {
   if (!clients.size) return;
-  const { data } = await load();
+  const data = updated || (await load()).data;
+  if (updated) {
+    const message = JSON.stringify({ type: "state", ...data, ...presence });
+    for (const s of clients.keys()) if (s.readyState === 1) s.send(message);
+    return;
+  }
   let hosts = 0, presenters = 0;
   for await (
     const entry of kv.list<{ role: string; time: number }>({ prefix: ["alin-live-v3", "presence"] })
@@ -59,12 +65,55 @@ async function broadcast() {
     if (entry.value.role === "host") hosts++;
     else presenters++;
   }
+  presence = { hosts, presenters };
   const message = JSON.stringify({ type: "state", ...data, hosts, presenters });
   for (const s of clients.keys()) if (s.readyState === 1) s.send(message);
 }
+const notesRoot = ["alin-notes-v1", "revision"];
+async function broadcastNotes(target?: WebSocket) {
+  let notes: Record<string, string> = {}, version: string | null = null;
+  for (;;) {
+    const before = await kv.get(notesRoot);
+    notes = {};
+    for await (const entry of kv.list<string>({ prefix: ["alin-notes-v1", "slide"] })) {
+      notes[String(entry.key[2])] = entry.value;
+    }
+    const after = await kv.get(notesRoot);
+    if (before.versionstamp === after.versionstamp) {
+      version = after.versionstamp;
+      break;
+    }
+  }
+  const message = JSON.stringify({ type: "notes", notes, version });
+  for (const [socket, client] of clients) {
+    if (client.role === "presenter" && socket.readyState === 1 && (!target || socket === target)) {
+      socket.send(message);
+    }
+  }
+}
+(async () => {
+  for await (const _ of kv.watch([notesRoot])) await broadcastNotes();
+})().catch(console.error);
+let notesVersion: string | null = null;
+setInterval(async () => {
+  if (![...clients.values()].some((c) => c.role === "presenter")) return;
+  try {
+    const entry = await kv.get(notesRoot);
+    if (entry.versionstamp !== notesVersion) {
+      notesVersion = entry.versionstamp;
+      await broadcastNotes();
+    }
+  } catch (e) {
+    console.error("Notes refresh failed", e);
+  }
+}, 500);
 async function watch() {
+  let previousRoot: string | null = null;
   for await (const entries of kv.watch([rootKey, previewKey])) {
-    await broadcast();
+    if (entries[0].versionstamp !== previousRoot) {
+      previousRoot = entries[0].versionstamp;
+      await broadcast();
+    }
     const preview = entries[1].value as { at?: number } | null;
     if (preview && Date.now() - (preview.at || 0) < 1000) {
       for (const s of clients.keys()) if (s.readyState === 1) s.send(JSON.stringify(preview));
@@ -90,8 +139,15 @@ setInterval(async () => {
     console.error("Session refresh failed", e);
   }
 }, 250);
+function validMotion(scene: unknown) {
+  const m = (scene as {
+    motion?: { id: string; startedAt: number; duration: number; from: { vectors: unknown[] } };
+  })?.motion;
+  return !m || (typeof m.id === "string" && m.id.length <= 80 && Number.isFinite(m.startedAt) &&
+    m.duration === 850 && Array.isArray(m.from?.vectors) && JSON.stringify(m).length < 30000);
+}
 function validView(v: View) {
-  return v && Number.isInteger(v.slide) && v.slide >= 0 && v.slide < 200 &&
+  return v && validMotion(v.scene) && Number.isInteger(v.slide) && v.slide >= 0 && v.slide < 200 &&
     Number.isInteger(v.revealed) && v.revealed >= 0 && v.revealed < 200 &&
     (!v.scene ||
       (Number.isInteger(v.scene.index) && v.scene.index >= 0 && v.scene.index < 100 &&
@@ -163,6 +219,7 @@ export function sessionRoute(request: Request): Response | undefined {
     clients.set(socket, { id, role });
     await heartbeat();
     await broadcast();
+    if (role === "presenter") await broadcastNotes(socket);
   };
   socket.onclose = async () => {
     clients.delete(socket);
@@ -187,9 +244,39 @@ export function sessionRoute(request: Request): Response | undefined {
         if (socket.readyState === 1) socket.send('{"type":"pong"}');
         return;
       }
+      if (m.type === "note") {
+        if (role !== "presenter") return;
+        if (
+          typeof m.key !== "string" || !m.key.length || m.key.length > 200 ||
+          typeof m.text !== "string" || new TextEncoder().encode(m.text).length > 50000 ||
+          typeof m.editId !== "string" || m.editId.length > 80
+        ) throw Error("Catatan tidak sah atau terlalu panjang.");
+        const committed = await kv.atomic().set(["alin-notes-v1", "slide", m.key], m.text).set(
+          notesRoot,
+          crypto.randomUUID(),
+        ).commit();
+        if (!committed.ok) throw Error("Catatan belum tersimpan; coba kembali.");
+        if (socket.readyState === 1) {
+          socket.send(
+            JSON.stringify({
+              type: "note-saved",
+              key: m.key,
+              editId: m.editId,
+              version: committed.versionstamp,
+            }),
+          );
+        }
+        await broadcastNotes();
+        return;
+      }
       if (m.type === "preview") {
         // Use the same stroke validator; previews are transient, final strokes durable.
         if (mutate(initial(), { ...m, type: "stroke" })) {
+          for (const peer of clients.keys()) {
+            if (peer !== socket && peer.readyState === 1) {
+              peer.send(JSON.stringify({ ...m, at: Date.now() }));
+            }
+          }
           await kv.set(previewKey, {
             type: "preview",
             stroke: m.stroke,
@@ -197,7 +284,10 @@ export function sessionRoute(request: Request): Response | undefined {
             at: Date.now(),
           }, { expireIn: 2000 });
         }
-      } else await change(m);
+      } else {
+        const updated = await change(m);
+        if (updated) await broadcast(updated);
+      }
     }).catch((e) => {
       if (socket.readyState === 1) {
         socket.send(JSON.stringify({ type: "error", message: e.message }));

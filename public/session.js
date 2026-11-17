@@ -3,7 +3,7 @@
   let lastSeen = Date.now();
   for (const name of ["keydown", "pointerdown", "input", "click"]) {
     document.addEventListener(name, (e) => {
-      if (e.isTrusted && !e.target.closest("#session-panel,#session-badge,#role-picker")) {
+      if (e.isTrusted && !e.target.closest("#session-panel,#session-badge,#role-picker,#presenter-notes")) {
         ownsControl = true;
       }
     }, true);
@@ -20,12 +20,13 @@
     stroke = null,
     mode = "off",
     color = "#c53243",
+    color2 = "#1f4bff",
     width = 4,
     retry = 0;
   const panel = document.createElement("dialog");
   panel.id = "session-panel";
   panel.innerHTML =
-    `<header><h2>Sesi & Whiteboard</h2><button id="settings-close">Tutup · S</button></header><p id="session-status" role="status">Mode lokal</p><p id="session-members"></p><button id="change-role">Ganti peran</button><label>Alamat presentasi<input id="shared-link" readonly></label><button data-copy="shared-link">Salin alamat</button><p id="network-note"></p><hr><h3>Whiteboard</h3><div class="settings-tools"><button data-mode="off">Navigasi</button><button data-mode="pen">Pena</button><button data-mode="eraser">Penghapus</button><label>Warna <input id="ink-color" type="color" value="#c53243"></label><label>Ketebalan <input id="ink-width" type="range" min="1" max="20" value="4"></label></div><div class="settings-tools"><button data-ink="undo">Undo · Ctrl+Z</button><button data-ink="redo">Redo · Ctrl+Y</button><button data-ink="clear">Hapus coretan slide</button></div><p>Tekan S untuk menutup panel. Coretan disimpan per slide selama sesi aktif.</p>`;
+    `<header><h2>Sesi & Whiteboard</h2><button id="settings-close">Tutup · S</button></header><p id="session-status" role="status">Mode lokal</p><p id="session-members"></p><button id="change-role">Ganti peran</button><label>Alamat presentasi<input id="shared-link" readonly></label><button data-copy="shared-link">Salin alamat</button><p id="network-note"></p><hr><h3>Whiteboard</h3><div class="settings-tools"><button data-mode="off">Navigasi</button><button data-mode="pen">Pena</button><button data-mode="eraser">Penghapus</button><label>Pena 1 · drag kiri <input id="ink-color" type="color" value="#c53243"></label><label>Pena 2 · Ctrl + drag kiri <input id="ink-color-2" type="color" value="#1f4bff"></label><label>Ketebalan <input id="ink-width" type="range" min="1" max="20" value="4"></label></div><div class="settings-tools"><button data-ink="undo">Undo · Ctrl+Z</button><button data-ink="redo">Redo · Ctrl+Y</button><button data-ink="clear">Hapus coretan slide</button></div><p>Tekan S untuk menutup panel. Coretan disimpan per slide selama sesi aktif.</p>`;
   document.body.append(panel);
   const board = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   board.id = "whiteboard";
@@ -60,11 +61,13 @@
     if (online && role !== "local") socket.send(JSON.stringify({ ...data, sender }));
   }
   function draw(preview) {
-    board.replaceChildren();
+    const existing = new Map([...board.children].map(path => [path.dataset.id, path]));
+    const keep = new Set();
     const slide = window.deckAPI.get().slide;
-    for (const s of [...ink, ...(preview ? [preview] : [])]) {
+    for (const s of [...ink, ...(preview && !ink.some(s => s.id === preview.id) ? [preview] : [])]) {
       if (s.slide !== slide) continue;
-      const path = document.createElementNS(board.namespaceURI, "polyline");
+      keep.add(s.id);
+      const path = existing.get(s.id) || document.createElementNS(board.namespaceURI, "polyline");
       path.setAttribute("points", s.points.map((p) => p.join(",")).join(" "));
       path.setAttribute("fill", "none");
       path.setAttribute("stroke", s.color);
@@ -72,8 +75,9 @@
       path.setAttribute("stroke-linecap", "round");
       path.setAttribute("stroke-linejoin", "round");
       path.dataset.id = s.id;
-      board.append(path);
+      if (!path.parentNode) board.append(path);
     }
+    for (const [id, path] of existing) if (!keep.has(id)) path.remove();
   }
   function localInk(m) {
     const slide = window.deckAPI.get().slide;
@@ -129,11 +133,24 @@
       revision = -1;
       lastSeen = Date.now();
       setStatus(`Terhubung sebagai ${role}.`);
+      if (role === "presenter") for (const [key, edit] of pendingNotes) send({ type: "note", key, ...edit });
     };
     socket.onmessage = (e) => {
       lastSeen = Date.now();
       const m = JSON.parse(e.data);
       if (m.type === "pong") return;
+      if (m.type === "notes" && role === "presenter") {
+        if ((m.version || "") < notesVersion) return;
+        notesVersion = m.version || ""; sharedNotes = m.notes; notesReady = true; loadNote(true); return;
+      }
+      if (m.type === "note-saved" && role === "presenter") {
+        if (pendingNotes.get(m.key)?.editId === m.editId) {
+          const saved = pendingNotes.get(m.key); sharedNotes[m.key] = saved.text;
+          if (m.version > notesVersion) notesVersion = m.version;
+          pendingNotes.delete(m.key); loadNote(true);
+        }
+        return;
+      }
       if (m.type === "error") { setStatus(m.message); return; }
       if (m.type === "preview") {
         if (m.sender !== sender) draw(m.stroke);
@@ -173,7 +190,110 @@
   picker.innerHTML = `<p class="role-kicker">ALJABAR LINEAR · D4 2B</p><h1 id="role-title">Bergabung ke presentasi</h1><p>Satu presentasi bersama. Pilih peran untuk perangkat ini.</p><div class="role-options"><button data-role="host"><strong>Host</strong><span>Bagikan layar dan kendalikan slide, animasi, serta whiteboard.</span></button><button data-role="presenter"><strong>Presenter</strong><span>Kendalikan slide, animasi, dan whiteboard bersama presenter lain.</span></button></div><p class="role-note">Host dan presenter memiliki kontrol yang sama dalam satu sesi.</p><button id="local-preview">Pratinjau sendiri tanpa sinkronisasi</button>`;
   document.body.append(picker);
   picker.addEventListener("cancel", e => e.preventDefault());
+  const preparation = document.createElement("p");
+  preparation.setAttribute("role", "status");
+  preparation.textContent = "Menyiapkan gambar dan font…";
+  picker.append(preparation);
+  const roleButtons = [...picker.querySelectorAll("button")];
+  roleButtons.forEach(b => b.disabled = true);
+  Promise.allSettled([...document.images].map(img => img.decode()).concat([document.fonts.ready])).then(results => {
+    preparation.textContent = results.some(r => r.status === "rejected")
+      ? "Sebagian gambar gagal dimuat. Muat ulang halaman untuk mencoba kembali."
+      : "Gambar dan font siap. Pilih peran untuk mulai.";
+    roleButtons.forEach(b => b.disabled = false);
+  });
+  let notePanel = null, noteEditor = null, noteKey = "", sharedNotes = {}, notesReady = false, notesVersion = "";
+  const pendingNotes = new Map();
+  // Geometry is private to this browser; only note text is synchronized.
+  let notePosition = null, noteResizeObserver = null;
+  function placeNotes(x, y) {
+    if (!notePanel) return;
+    const rect = notePanel.getBoundingClientRect();
+    notePosition = {
+      x: Math.max(0, Math.min(x, window.innerWidth - rect.width)),
+      y: Math.max(0, Math.min(y, window.innerHeight - rect.height)),
+    };
+    Object.assign(notePanel.style, { left: `${notePosition.x}px`, top: `${notePosition.y}px`, right: "auto" });
+  }
+  function clampNotes() {
+    if (!notePanel) return;
+    const rect = notePanel.getBoundingClientRect();
+    placeNotes(notePosition?.x ?? rect.left, notePosition?.y ?? rect.top);
+  }
+  window.addEventListener("resize", clampNotes);
+  function enableNoteDragging() {
+    const header = notePanel.querySelector("header");
+    header.title = "Seret untuk memindahkan notes";
+    let drag = null;
+    header.addEventListener("pointerdown", e => {
+      if (e.target.closest("button") || e.button !== 0 || !e.isPrimary) return;
+      const rect = notePanel.getBoundingClientRect();
+      drag = { id: e.pointerId, x: e.clientX - rect.left, y: e.clientY - rect.top };
+      header.setPointerCapture(e.pointerId);
+      header.classList.add("dragging");
+      e.preventDefault();
+    });
+    header.addEventListener("pointermove", e => {
+      if (drag?.id === e.pointerId) placeNotes(e.clientX - drag.x, e.clientY - drag.y);
+    });
+    const endDrag = e => {
+      if (drag?.id !== e.pointerId) return;
+      drag = null;
+      header.classList.remove("dragging");
+      if (header.hasPointerCapture(e.pointerId)) header.releasePointerCapture(e.pointerId);
+    };
+    header.addEventListener("pointerup", endDrag);
+    header.addEventListener("pointercancel", endDrag);
+    header.addEventListener("lostpointercapture", endDrag);
+    noteResizeObserver = new ResizeObserver(clampNotes);
+    noteResizeObserver.observe(notePanel);
+    clampNotes();
+  }
+  function closeNotes() {
+    noteResizeObserver?.disconnect(); noteResizeObserver = null;
+    notePanel?.remove(); notePanel = null; noteEditor = null; noteKey = "";
+  }
+  function noteSlide() {
+    const slide = document.querySelector(".slide.is-active");
+    return { key: slide.dataset.scene || slide.dataset.title, title: slide.querySelector("h2")?.textContent || slide.dataset.title };
+  }
+  function loadNote(force = false) {
+    if (!notePanel || role !== "presenter") return;
+    const current = noteSlide(), changed = current.key !== noteKey;
+    noteEditor.disabled = !online || !notesReady;
+    if (changed || force) {
+      noteKey = current.key;
+      notePanel.querySelector("h3").textContent = current.title;
+      const text = pendingNotes.get(noteKey)?.text ?? sharedNotes[noteKey] ?? "";
+      if (noteEditor.value !== text) noteEditor.value = text;
+    }
+    notePanel.querySelector("[role=status]").textContent = !online ? "Terputus — menunggu koneksi kembali" : !notesReady ? "Memuat notes bersama…" : pendingNotes.has(noteKey) ? "Menyimpan ke server…" : "Tersimpan di server · dibagikan ke semua presenter";
+  }
+  function toggleNotes() {
+    if (role !== "presenter" || picker.open) return;
+    if (notePanel) { closeNotes(); return; }
+    notePanel = document.createElement("aside"); notePanel.id = "presenter-notes";
+    notePanel.setAttribute("aria-label", "Catatan bersama presenter");
+    notePanel.innerHTML = `<header><strong>Notes · W</strong><button type="button" aria-label="Tutup notes">×</button></header><h3></h3><textarea maxlength="12000" aria-label="Catatan untuk slide ini" placeholder="Tulis catatan berbicara untuk slide ini…"></textarea><p role="status"></p>`;
+    document.body.append(notePanel); noteEditor = notePanel.querySelector("textarea");
+    notePanel.querySelector("button").onclick = closeNotes;
+    noteEditor.oninput = () => {
+      if (!online || role !== "presenter") return;
+      const edit = { text: noteEditor.value, editId: crypto.randomUUID() };
+      pendingNotes.set(noteKey, edit);
+      send({ type: "note", key: noteKey, ...edit });
+      loadNote();
+    };
+    noteEditor.addEventListener("keydown", e => { if (e.key === "Escape") { e.stopPropagation(); closeNotes(); } });
+    loadNote();
+    enableNoteDragging();
+  }
+  setInterval(() => {
+    if (role !== "presenter") closeNotes();
+    else loadNote();
+  }, 100);
   function disconnect() {
+    closeNotes(); sharedNotes = {}; notesReady = false; notesVersion = ""; pendingNotes.clear();
     clearTimeout(retry); online = false; ownsControl = false; mode = "off";
     board.style.pointerEvents = "none";
     if (socket) { socket.onclose = null; socket.close(); socket = null; }
@@ -181,12 +301,12 @@
   }
   picker.querySelectorAll("[data-role]").forEach(b => b.onclick = () => {
     disconnect(); role = b.dataset.role; revision = -1; picker.close();
-    panel.querySelectorAll("[data-mode],[data-ink],#ink-color,#ink-width").forEach(x => x.disabled = false);
+    panel.querySelectorAll("[data-mode],[data-ink],#ink-color,#ink-color-2,#ink-width").forEach(x => x.disabled = false);
     connect();
   });
   picker.querySelector("#local-preview").onclick = () => {
     disconnect(); role = "local"; picker.close(); setStatus("Pratinjau sendiri — tidak terhubung ke sesi bersama.");
-    panel.querySelectorAll("[data-mode],[data-ink],#ink-color,#ink-width").forEach(x => x.disabled = false);
+    panel.querySelectorAll("[data-mode],[data-ink],#ink-color,#ink-color-2,#ink-width").forEach(x => x.disabled = false);
   };
   panel.querySelector("#change-role").onclick = () => { disconnect(); panel.close(); picker.showModal(); };
   panel.querySelectorAll("[data-copy]").forEach((b) =>
@@ -216,6 +336,7 @@
     }
   );
   panel.querySelector("#ink-color").oninput = (e) => color = e.target.value;
+  panel.querySelector("#ink-color-2").oninput = (e) => color2 = e.target.value;
   panel.querySelector("#ink-width").oninput = (e) => width = Number(e.target.value);
   panel.querySelectorAll("[data-ink]").forEach((b) =>
     b.onclick = () => send({ type: b.dataset.ink })
@@ -228,6 +349,7 @@
     ];
   };
   board.onpointerdown = (e) => {
+    if (e.button !== 0) return;
     if (role !== "local" && !online) return;
     const p = point(e);
     if (mode === "eraser") {
@@ -242,7 +364,7 @@
     board.setPointerCapture(e.pointerId);
     stroke = {
       id: crypto.randomUUID(),
-      color,
+      color: e.ctrlKey ? color2 : color,
       width,
       slide: window.deckAPI.get().slide,
       points: [p],
@@ -275,6 +397,9 @@
     if (
       e.target.closest("textarea,select,input:not([type=color]):not([type=range]):not([readonly])")
     ) return;
+    if (e.key.toLowerCase() === "w" && !e.ctrlKey && !e.metaKey && !e.altKey) {
+      e.preventDefault(); e.stopImmediatePropagation(); toggleNotes(); return;
+    }
     if (e.key.toLowerCase() === "s" && !e.ctrlKey && !e.metaKey) {
       e.preventDefault();
       e.stopImmediatePropagation();
@@ -300,7 +425,7 @@
   }, true);
   document.addEventListener("pointerdown", (e) => {
     if (
-      (role !== "local" && !online) && !panel.contains(e.target) && !picker.contains(e.target) &&
+      (role !== "local" && !online) && !panel.contains(e.target) && !picker.contains(e.target) && !e.target.closest("#presenter-notes") &&
       e.target !== badge && !e.target.closest('[data-act="fullscreen"]')
     ) {
       e.preventDefault();
@@ -309,7 +434,7 @@
   }, true);
   document.addEventListener("click", (e) => {
     if (
-      (role !== "local" && !online) && !panel.contains(e.target) && !picker.contains(e.target) &&
+      (role !== "local" && !online) && !panel.contains(e.target) && !picker.contains(e.target) && !e.target.closest("#presenter-notes") &&
       e.target !== badge && !e.target.closest('[data-act="fullscreen"]')
     ) {
       e.stopImmediatePropagation();
@@ -325,7 +450,7 @@
         send({ type: "view", view: JSON.parse(v) });
       }
     }
-  }, 80);
+  }, 16);
   setInterval(() => {
     if (online) {
       if (Date.now() - lastSeen > 45000) {

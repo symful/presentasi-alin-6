@@ -76,3 +76,30 @@ animasinya di browser (pencahayaan, pergerakan gambar, dan penunjuk jalur), buka
 video hasil simulasi fisika.
 
 Pemeriksaan akhir tambahan: kamera 3D dan pembuatan sesi langsung dari panel S di alamat HTTPS publik lulus. Penanganan Origin memperbolehkan terminasi TLS proxy pada host yang sama; origin host lain ditolak. Snapshot animasi disiarkan agar keadaan jeda juga sama. Keanggotaan tanpa perubahan revisi tidak menimpa kontrol presenter. Koneksi putus menghentikan animasi lokal; heartbeat memantau sambungan.
+
+
+## Audit contoh soal sesuai permintaan terbaru
+
+Contoh bernomor memakai pernyataan asli ALIN-6, bukan soal numerik pengganti:
+
+| Contoh | Halaman PDF | Penyesuaian |
+|---|---|---|
+| 1 | 5 | u,v di Rn dan rumus umum; pasangan (3,1),(1,2) dihapus dari contoh soal |
+| 2 | 6–8 | Pembuktian berbobot 2,1,3 dengan u,v,w simbolik dan empat aksioma |
+| 3 | 8 | Bentuk kuadrat u1²+2u2²−3u3², kondisi kegagalan umum; angka buatan −11 dihapus |
+| 4 | 9 | Operasi ad+cf dan vektor penyangkal (0,2,0) sesuai dosen |
+| 5 | 12 | Himpunan A, B, C sesuai dosen |
+| 6 | 14–15 | a=(1,2), u=(1,1)/√2, v=(1,−1)/√2 sesuai dosen |
+| 7 | 22–25 | Basis (1,1,1),(0,1,1),(0,0,1) sesuai dosen |
+| 8–9 | 26–40 | Bidang dari (1,0,1),(0,1,1), target (1,1,1); kedua soal identik pada PDF |
+
+Pada Contoh 3, baris operasi pada cetakan PDF memiliki subskrip yang tidak
+konsisten dengan baris jawabannya. Implementasi mengikuti bentuk kuadrat jawaban
+yaitu −3u3² (operasi −3u3v3), dengan pertidaksamaan ketat <0 saat 3u3²>u1²+2u2².
+Tidak menyalin kesalahan ketik sebagai rumus baru. Untuk Contoh 2, W dipahami
+sebagai ruang vektor/subruang; hanya W⊆R³ tanpa penutupan belum cukup menjamin RHD.
+
+Ilustrasi numerik pada pengantar/penjelasan aksioma tetap alat bantu visual, tidak
+diberi nomor sebagai soal dosen. Vektor simbolik pada contoh umum adalah skema;
+koordinatnya tidak diganti dengan angka soal buatan. Tahap hasil awal homogenitas
+dihapus; dua cara perhitungannya tetap ditampilkan.

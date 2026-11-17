@@ -766,3 +766,9 @@
 
 .slide:not(.is-active){visibility:hidden;transition:none}
 .slide.is-active{transition:opacity .16s ease,transform .16s ease}
+
+[data-scene="concept-metric"] .lab__explain { white-space: pre-line; }
+
+.lab__notation { color: #15804a; font-size: 20px; line-height: 1.45; margin-top: 14px; }
+.application-card img { object-fit: contain; }
+.application-credit { display:block; font-size:14px; color:#63718c; margin-top:10px; }

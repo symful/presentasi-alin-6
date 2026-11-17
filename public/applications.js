@@ -1,12 +1,17 @@
 (() => {
   const topics = [
     ["concept-metric-negative", "Untuk Apa Hasil Kali Dalam?", [
-      "Grafika 3D: arah cahaya dan normal permukaan menentukan terang permukaan.",
-      "Simulator penerbangan: proyeksi ke arah depan menghitung kecepatan maju.",
-      "Navigasi robot: proyeksi posisi ke jalur mengukur penyimpangan dari lintasan.",
+      ["light", "Pencahayaan 3D: arah cahaya dibandingkan dengan arah permukaan untuk menentukan terang dan gelap."],
+      ["reflect", "Pantulan cahaya: hasil kali dalam membantu menghitung arah pantulan pada permukaan."],
+      ["vision", "Musuh dalam game: hasil kali dalam dipakai untuk memeriksa apakah pemain berada di depannya."],
+    ]],
+    ["6", "Untuk Apa Norm?", [
+      ["distance", "Tekstur Blender: jarak dari sebuah titik menentukan perubahan warna pada permukaan."],
+      ["speed", "Gerak dalam game: norm vektor kecepatan menentukan seberapa cepat karakter bergerak."],
+      ["normalize", "Arah pada shader: vektor dibagi normnya agar panjangnya menjadi satu tanpa mengubah arah."],
     ]],
   ];
-  for (const [after, title, descriptions] of topics) {
+  for (const [after, title, examples] of topics) {
     const anchor = document.querySelector(`[data-scene="${after}"]`);
     if (!anchor) continue;
     const section = document.createElement("section");
@@ -19,23 +24,24 @@
     inner.append(h);
     const grid = document.createElement("div");
     grid.className = "application-cards";
-    ["render", "flight", "robot"].forEach((name, i) => {
+    examples.forEach(([name, description]) => {
       const card = document.createElement("figure");
       card.className = `application-card app-${name}`;
       const media = document.createElement("div");
       media.className = "application-image";
       const img = document.createElement("img");
-      img.src = `assets/applications/${name}.png`;
-      img.alt = [
-        "Ilustrasi perangkat lunak grafika 3D",
-        "Ilustrasi simulator penerbangan",
-        "Ilustrasi perangkat lunak robotika",
-      ][i];
-      const movement = document.createElement("span");
-      movement.className = "application-overlay";
-      media.append(img, movement);
+      img.src = `assets/applications/source-${name}.png`;
+      img.alt = `Gambar dokumentasi resmi: ${description}`;
+      media.append(img);
       const caption = document.createElement("figcaption");
-      caption.textContent = descriptions[i];
+      caption.textContent = description;
+      const credit = document.createElement("a");
+      credit.className = "application-credit";
+      const godot = ["vision", "speed"].includes(name);
+      credit.textContent = godot ? "Sumber: dokumentasi Godot" : "Sumber: Blender Manual";
+      credit.href = godot ? "https://docs.godotengine.org/en/stable/tutorials/math/vector_math.html" : "https://docs.blender.org/manual/en/latest/render/shader_nodes/utilities/vector/vector_math.html";
+      credit.target = "_blank"; credit.rel = "noopener";
+      caption.append(credit);
       card.append(media, caption);
       grid.append(card);
     });

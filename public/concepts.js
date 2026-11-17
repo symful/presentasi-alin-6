@@ -12,8 +12,8 @@
     concept: "metric",
     title: "Memahami Hasil Kali Dalam",
     intro:
-      "Kita pilih dua vektor a dan b. Pada contoh ini, hasil kali dalam dihitung dengan menjumlahkan hasil kali komponen yang bersesuaian.",
-    source: "Ilustrasi Euclides untuk ALIN-6 hlm. 3–5; bukan definisi ulang ruang vektor.",
+      "",
+    source: "Ilustrasi Euclides untuk ALIN-6 hlm. 3–5. bukan definisi ulang ruang vektor.",
     application:
       "Grafika 3D: hasil kali dalam arah cahaya dan normal permukaan menentukan kuat pencahayaan pada model Lambert.",
     steps: [
@@ -24,26 +24,26 @@
         0,
       ),
       s(
-        "Pilih arah acuan b",
-        "Kita pilih b = (2,0) sebagai acuan ke kanan. Vektor b adalah masukan kedua yang sengaja dipilih, bukan hasil perhitungan dari a. Kita ingin mengukur bagian gerak a pada arah ini.",
-        "a merah; b biru. Keduanya berawal pada titik yang sama.",
+        "Diberikan pula vektor b",
+        "Diberikan pula vektor b = (2,0). Kita akan menghitung hasil kali dalam vektor a dan b.",
+        "",
         1,
       ),
       s(
-        "Perhatikan bagian a pada arah b",
-        "Tarik garis tegak lurus dari ujung a ke garis b. Vektor proyeksinya adalah (4,0), dengan nilai bertanda 4. Nilai 4 ini belum merupakan hasil kali dalam.",
-        "Vektor proyeksi: (4,0)\nProyeksi bertanda: 4",
+        "Apa yang sebenarnya dicari?",
+        "Yang dicari adalah nilai skalar ⟨a,b⟩. Pada aturan Euclides, nilai ini dipengaruhi panjang kedua vektor dan sudutnya:\n• positif untuk sudut lancip\n• nol untuk tegak lurus\n• negatif untuk sudut tumpul.",
+        "Vektor a dan b → nilai skalar ⟨a,b⟩",
         2,
       ),
       s(
-        "Hitung dengan komponen kedua vektor",
-        "Kalikan komponen pertama a dengan komponen pertama b, lalu tambahkan hasil kali komponen kedua. Karena komponen kedua b bernilai nol, suku 3 × 0 tidak menambah hasil.",
+        "Hitung tiap komponen vektor",
+        "Kalikan setiap komponen vektor a dengan komponen vektor b yang bersesuaian, kemudian jumlahkan hasil perkaliannya.",
         "⟨a,b⟩ = a₁b₁ + a₂b₂\n= (4 × 2) + (3 × 0) = 8",
         3,
       ),
       s(
         "Hasil kali dalam kedua vektor adalah 8",
-        "Hasil kali komponen pertama adalah 8, sedangkan hasil kali komponen kedua adalah 0. Jumlahnya 8. Inilah nilai hasil kali dalam kedua vektor; bukan vektor baru atau luas segitiga.",
+        "Hasilnya 8, bernilai positif karena sudut antara a dan b lancip. Besar nilai ini juga dipengaruhi panjang kedua vektor. 8 bukan panjang vektor maupun besar sudut.",
         "⟨a,b⟩ = a₁b₁ + a₂b₂\n= (4 × 2) + (3 × 0)\n= 8 + 0 = 8",
         4,
       ),
@@ -57,13 +57,13 @@
   }, {
     before: 4,
     concept: "metric-negative",
-    title: "Hasil Kali Dalam di Kuadran II",
-    intro: "Arah acuan b tetap ke kanan. Sekarang a bergerak ke kiri dan ke atas.",
+    title: "Hasil Kali Dalam Sudut Tumpul",
+    intro: "Diberikan vektor b = (2,0) dan vektor a = (−4,3).",
     steps: [
-      s("Ubah arah gerak a", "Ambil a = (−4,3): 4 satuan ke kiri dan 3 satuan ke atas. Vektor acuan tetap b = (2,0).", "a = (−4,3); b = (2,0)", 1),
-      s("Proyeksi mengarah ke kiri", "Tarik tegak lurus dari ujung a ke garis mendatar. Proyeksinya berlawanan arah dengan b, sehingga nilai bertandanya −4.", "proyeksi bertanda = −4; panjang b = 2", 2),
-      s("Hitung dengan aturan yang sama", "Kalikan komponen yang bersesuaian, lalu jumlahkan. Komponen pertama memberi −8 dan komponen kedua memberi 0, sehingga hasil kali dalamnya −8.", "⟨a,b⟩ = (−4) × 2 + 3 × 0 = −8", 3),
-      s("Bandingkan kedua arah gerak", "Kuadran I tadi memberi 8. Kuadran II ini memberi −8. Acuannya sama; yang berubah adalah arah komponen mendatar a.", "⟨(4,3),(2,0)⟩ = 8\n⟨(−4,3),(2,0)⟩ = −8", 4),
+      s("Ubah arah gerak a", "Ambil a = (−4,3): 4 satuan ke kiri dan 3 satuan ke atas. Vektor b tetap (2,0).", "a = (−4,3). b = (2,0)", 1),
+      s("Sudut kedua vektor kini tumpul", "Vektor a mengarah ke kiri atas, sedangkan b tetap ke kanan. Sudut di antara keduanya lebih dari 90°, sehingga hasil kali dalamnya akan negatif.", "Sudut tumpul → hasil kali dalam negatif", 2),
+      s("Hitung dengan aturan yang sama", "Kalikan komponen yang bersesuaian, lalu jumlahkan.", "⟨a,b⟩ = (−4) × 2 + 3 × 0 = −8", 3),
+      s("Bandingkan kedua arah gerak", "Kuadran I tadi memberi 8. Kuadran II ini memberi −8. Vektor b tetap sama. Yang berubah adalah arah komponen mendatar a.", "⟨(4,3),(2,0)⟩ = 8\n⟨(−4,3),(2,0)⟩ = −8", 4),
     ],
   }, {
     before: 12,
@@ -102,12 +102,16 @@
   const colored = (text, color) => ({ text, color });
   const red = text => colored(text, "#c53243"), blue = text => colored(text, "#1f4bff"), green = text => colored(text, "#15804a");
   const positive = globalThis.AlinConcepts[0], negative = globalThis.AlinConcepts[1];
+  positive.steps[1].formulaParts = [blue("b = (2,0)")];
+  positive.steps[3].note = "Notasi ⟨a,b⟩ dibaca hasil kali dalam vektor a dan vektor b.";
   positive.steps[0].formulaParts = [red("a = (4,3)")];
   positive.steps[3].formulaParts = ["⟨", red("a"), ",", blue("b"), "⟩ = ", red("a₁"), blue("b₁"), " + ", red("a₂"), blue("b₂"), "\n= (", red("4"), " × ", blue("2"), ") + (", red("3"), " × ", blue("0"), ")\n= 8 + 0 = 8"];
   positive.steps[4].formulaParts = positive.steps[3].formulaParts;
-  negative.steps[0].formulaParts = [red("a = (−4,3)"), "; ", blue("b = (2,0)")];
+  negative.steps[0].formulaParts = [red("a = (−4,3)"), ". ", blue("b = (2,0)")];
   negative.steps[2].formulaParts = ["⟨", red("a"), ",", blue("b"), "⟩ = ", red("a₁"), blue("b₁"), " + ", red("a₂"), blue("b₂"), "\n= (", red("−4"), " × ", blue("2"), ") + (", red("3"), " × ", blue("0"), ")\n= −8 + 0 = −8"];
   negative.steps[3].formulaParts = ["⟨", red("(4,3)"), ",", blue("(2,0)"), "⟩ = 8\n⟨", red("(−4,3)"), ",", blue("(2,0)"), "⟩ = −8"];
+  positive.steps.splice(4, 2);
+  negative.steps.splice(0, 2);
   globalThis.drawAlinConcept = (svg, c, state) => {
     svg.replaceChildren();
     const ns = "http://www.w3.org/2000/svg", blue = "#1f4bff", ink = "#25334c", grey = "#8694ab";
@@ -170,14 +174,14 @@
       n("path", { d: `M${x + 16},${y} v-16 h-16`, stroke: ink, "stroke-width": 2, fill: "none" });
     if (c.concept.startsWith("metric")) {
       const negative = c.concept === "metric-negative";
-      const t = clamp(p - 1), base = [negative ? 420 : 160, 335], A = [negative ? 140 : 440, 125], F = [A[0], 335];
+      const base = [negative ? 420 : 160, 335], A = [negative ? 140 : 440, 125];
       text(
         30,
         35,
         [
           "Satu vektor: a",
           "Dua vektor: a dan b",
-          negative ? "Bagian a yang berlawanan dengan b" : "Bagian a yang searah b",
+          negative ? "Sudut tumpul antara a dan b" : "Hubungan arah dua vektor",
           "Perkalian komponen yang bersesuaian",
           negative ? "Hasil kali dalam: −8" : "Hasil kali dalam: 8",
           "Ruang + hasil kali dalam yang memenuhi aksioma",
@@ -189,17 +193,6 @@
       text(base[0] - 17, 365, "0", 16, grey);
       text(690, 340, "x", 16, grey);
       text(base[0] + 8, 90, "y", 16, grey);
-      if (p > 1) {
-        n("polygon", {
-          points: `${base} ${A} ${A[0]},${125 + 210 * t}`,
-          fill: "#15804a",
-          "fill-opacity": .12 * t,
-        });
-        line(A, [A[0], 125 + 210 * t], grey, 2, "6 5");
-        line([base[0], 348], [base[0] + (negative ? -280 : 280) * t, 348], "#15804a", 7);
-        text(negative ? 270 : 295, 380, negative ? "−4" : "4", 23, "#15804a");
-        if (t === 1) square(...F);
-      }
       arrow(base, A, negative ? "a = (−4,3)" : "a = (4,3)", "#c53243");
       if (p > 0) arrow(base, [base[0] + 140 * clamp(p), 335], "b = (2,0)", blue);
       if (p >= 1) text(base[0] + 65, 315, "2", 23, blue);
@@ -208,14 +201,6 @@
         text(negative ? 440 : 500, 225, "+ 3 × 0", 27, ink);
         text(negative ? 440 : 500, 265, negative ? "= −8" : "= 8", 29, ink);
       }
-      text(
-        35,
-        445,
-        p < 2
-          ? "Diketahui → pertanyaan → proyeksi → hasil → makna"
-          : "Arsiran menunjukkan hubungan geometris, bukan besaran luas.",
-        18,
-      );
     } else {
       axes();
       const a = (45 + 45 * clamp(p)) * Math.PI / 180,

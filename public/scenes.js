@@ -37,7 +37,7 @@
             : deg < 90
             ? "Sudut lancip: hasilnya positif"
             : "Sudut tumpul: hasilnya negatif",
-          "Vektor u tetap. Vektor v berputar dengan panjang yang sama; yang berubah adalah keselarasan arahnya.",
+          "Vektor u tetap. Vektor v berputar dengan panjang yang sama. yang berubah adalah keselarasan arahnya.",
           `⟨u, v⟩ = ‖u‖ ‖v‖ cos θ\nθ = ${deg}°  →  ⟨u, v⟩ = ${
             deg === 90 ? "0" : deg === 60 ? "2" : "−2"
           }`,
@@ -53,7 +53,7 @@
       title: "Norm dan Jarak",
       intro:
         "Di ruang Euclides, norm adalah panjang panah. Komponen horizontal dan vertikal membentuk segitiga siku-siku.",
-      source: "Definisi norm • PDF halaman 5; ilustrasi turunan (3, 4)",
+      source: "Definisi norm • PDF halaman 5. ilustrasi turunan (3, 4)",
       zoom: 80,
       steps: [
         S(
@@ -128,7 +128,7 @@
         S(
           "Basis tidak harus sejajar sumbu",
           "Basis ortonormal tidak harus sejajar sumbu koordinat. Setiap pasangan vektor berbeda saling ortogonal dan masing-masing memiliki norm satu.",
-          "⟨u,v⟩ = 0; ‖u‖ = ‖v‖ = 1",
+          "⟨u,v⟩ = 0. ‖u‖ = ‖v‖ = 1",
           [
             V("u", [1 / Math.sqrt(2), 1 / Math.sqrt(2), 0], "u", 1),
             V("v", [1 / Math.sqrt(2), -1 / Math.sqrt(2), 0], "v", 2),
@@ -366,7 +366,7 @@
     title: "Hasil Kali Dalam Euclides",
     intro:
       "Misalkan u, v ∈ Rⁿ. Hasil kali dalam Euclides diperoleh dengan menjumlahkan hasil kali komponen yang bersesuaian.",
-    source: "Contoh 1 • PDF halaman 5; ilustrasi perhitungan di R²",
+    source: "Contoh 1 • PDF halaman 5. ilustrasi perhitungan di R²",
     zoom: 95,
     steps: [
       S(
@@ -452,14 +452,14 @@
     steps: [
       S(
         "Himpunan A",
-        "Kedua vektor berlawanan arah. Hasil kali dalamnya tidak nol; A bukan himpunan ortogonal.",
+        "Kedua vektor berlawanan arah. Hasil kali dalamnya tidak nol. A bukan himpunan ortogonal.",
         "A = {(1,0), (−1,0)}\n⟨(1,0),(−1,0)⟩ = −1",
         [V("u", [1, 0, 0], "(1,0)", 1), V("v", [-1, 0, 0], "(−1,0)")],
       ),
       S(
         "Himpunan B",
         "Kedua vektor saling tegak lurus dan masing-masing memiliki norm satu. B merupakan himpunan ortonormal.",
-        "B = {(1,0), (0,−1)}\n⟨u,v⟩ = 0; ‖u‖ = ‖v‖ = 1",
+        "B = {(1,0), (0,−1)}\n⟨u,v⟩ = 0. ‖u‖ = ‖v‖ = 1",
         [V("u", [1, 0, 0], "(1,0)", 1), V("v", [0, -1, 0], "(0,−1)")],
         { circle: true },
       ),
@@ -482,6 +482,17 @@
   const NS = "http://www.w3.org/2000/svg";
   globalThis.AlinNarrative?.(configs);
   globalThis.AlinAxioms?.(configs);
+  configs[6].intro = configs[6].intro.replace(/\bu\b(?!\u0304)/g, "ū");
+  for (const step of configs[6].steps) {
+    for (const key of ["explain", "formula"]) step[key] = step[key].replace(/\bu\b(?!\u0304)/g, "ū");
+    if (step.formulaParts) for (let i = 0; i < step.formulaParts.length; i++) {
+      const token = step.formulaParts[i];
+      if (typeof token === "string") step.formulaParts[i] = token.replace(/\bu\b(?!\u0304)/g, "ū");
+      else token.text = token.text.replace(/\bu\b(?!\u0304)/g, "ū");
+    }
+    for (const vector of step.vectors) vector.label = vector.label.replace(/\bu\b(?!\u0304)/g, "ū");
+    step.note = "ū menyatakan vektor. ‖ū‖ menyatakan norm atau panjang vektor.";
+  }
   const identityColors = {
     w: "#8551ac",
     sum: "#15804a",
@@ -701,6 +712,7 @@
       );
     }
     for (const v of state.vectors) {
+      if ((v.opacity ?? 1) < 0.01) continue;
       const A = project(v.from),
         B = project(v.to),
         dx = B[0] - A[0],
@@ -746,7 +758,7 @@
         const approximate = coord.some((x) => Math.abs(x * 100 - Math.round(x * 100)) > 1e-6);
         label(
           v.to,
-          `${name} ${approximate ? "≈ " : ""}(${
+          v.coordinatesText ? `${name} (${v.coordinatesText})` : `${name} ${approximate ? "≈ " : ""}(${
             coord.map((x) => Number(x.toFixed(2))).join(", ")
           })`,
           { class: "vector-label", style: `fill:${color};font-size:17px`, opacity },
@@ -786,7 +798,7 @@
         }],
       };
     }
-    const keys = new Set([...a.vectors, ...b.vectors].map((v) => v.id));
+    const keys = new Set(b.vectors.map((v) => v.id));
     return {
       ...b,
       ellipsoid: a.ellipsoid && b.ellipsoid ? lerp(a.ellipsoid, b.ellipsoid, t) : b.ellipsoid,
@@ -796,7 +808,7 @@
         return {
           ...model,
           from: lerp(A?.from || model.from, B?.from || model.from, t),
-          to: lerp(A?.to || model.from, B?.to || model.from, t),
+          to: A && B ? lerp(A.to, B.to, t) : model.to,
           opacity: A && B ? 1 : B ? t : 1 - t,
         };
       }),
@@ -832,6 +844,7 @@
     }
     const heading = slide.querySelector("h2");
     heading.textContent = config.title;
+    slide.dataset.title = config.title;
     const inner = slide.querySelector(".slide__inner"), header = slide.querySelector(".s-head");
     inner.replaceChildren(header);
     const lab = document.createElement("div");
@@ -882,13 +895,14 @@
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = "lab__step";
-      btn.textContent = config.concept ? String(i + 1).padStart(2, "0") : `0${i + 1}`;
+      btn.textContent = String(i + 1).padStart(2, "0");
       btn.setAttribute("aria-label", step.heading);
       lab.querySelector(".lab__steps").append(btn);
       return btn;
     });
     let index = 0,
       frame = 0,
+      motion = null,
       playing = false,
       yaw = -.65,
       pitch = .55,
@@ -900,7 +914,7 @@
     }
     function ui() {
       const s = config.steps[index];
-      lab.querySelector(".lab__intro").hidden = s.explain === config.intro;
+      lab.querySelector(".lab__intro").hidden = !config.intro || s.explain === config.intro;
       lab.querySelector(".lab__heading").textContent = s.heading;
       lab.querySelector(".lab__explain").textContent = s.explain;
       const formula = lab.querySelector(".lab__formula");
@@ -938,6 +952,10 @@
           formula.append(span);
         }
       }
+      let note = lab.querySelector(".lab__notation");
+      if (!note) { note = document.createElement("p"); note.className = "lab__notation"; formula.after(note); }
+      note.textContent = s.note || "";
+      note.hidden = !s.note;
       algebra.replaceChildren();
       for (const v of s.vectors.slice(0, 4)) {
         const item = document.createElement("span");
@@ -954,8 +972,9 @@
             ? "tegak"
             : v.label.replace(/ · panjang.*$/, "")
         }: (${coordinates.map((x) => Number(x.toFixed(3))).join(", ")})${approx ? " ≈" : ""}`;
+        if (v.coordinatesText) item.textContent = `${v.label}: (${v.coordinatesText})`;
         item.title =
-          "Komponen vektor = koordinat ujung − koordinat pangkal. Desimal bertanda ≈ adalah pendekatan; rumus eksak ada di kiri.";
+          "Komponen vektor = koordinat ujung − koordinat pangkal. Desimal bertanda ≈ adalah pendekatan. rumus eksak ada di kiri.";
         algebra.append(item);
       }
       if (config.concept?.startsWith("metric")) {
@@ -964,7 +983,6 @@
           const [label, color] of [
             [config.concept === "metric-negative" ? "a = (−4,3)" : "a = (4,3)", "#c53243"],
             ...(s.phase >= 1 ? [["b = (2,0)", "#1f4bff"]] : []),
-            ...(s.phase >= 2 ? [[config.concept === "metric-negative" ? "proyeksi = (−4,0)" : "proyeksi = (4,0)", "#15804a"]] : []),
           ]
         ) {
           const item = document.createElement("span");
@@ -996,6 +1014,7 @@
       slide.dataset.sceneStep = String(index);
     }
     function stop() {
+      motion = null;
       cancelAnimationFrame(frame);
       frame = 0;
       playing = false;
@@ -1003,6 +1022,8 @@
     }
     function move(next, auto = false) {
       cancelAnimationFrame(frame);
+      frame = 0;
+      motion = null;
       const previous = rendered;
       index = Math.max(0, Math.min(next, config.steps.length - 1));
       const target = config.steps[index];
@@ -1016,6 +1037,7 @@
       }
       clock = performance.now();
       const duration = 850;
+      motion = { id: crypto.randomUUID(), from: previous, startedAt: Date.now(), duration };
       function tick(now) {
         if (!slide.classList.contains("is-active") || document.hidden) {
           stop();
@@ -1093,15 +1115,29 @@
     scenes.set(slide, {
       stop,
       get() {
-        return { index, yaw, pitch, visual: rendered };
+        return { index, yaw, pitch, ...(motion ? { motion } : { visual: rendered }) };
       },
       set(v) {
         if (!v) return;
-        stop();
-        index = Math.max(0, Math.min(v.index, config.steps.length - 1));
+        const sameMotion = v.motion?.id && v.motion.id === motion?.id;
         yaw = v.yaw;
         pitch = v.pitch;
-        render(v.visual || config.steps[index]);
+        if (sameMotion) { render(); return; }
+        stop();
+        index = Math.max(0, Math.min(v.index, config.steps.length - 1));
+        motion = v.motion || null;
+        const target = config.steps[index];
+        if (motion && !reduced.matches) {
+          const currentMotion = motion;
+          const start = performance.now() - Math.max(0, Math.min(currentMotion.duration, Date.now() - currentMotion.startedAt));
+          const tick = now => {
+            if (motion !== currentMotion) return;
+            const raw = Math.min(1, (now - start) / currentMotion.duration);
+            render(interpolate(currentMotion.from, target, raw * raw * (3 - 2 * raw)));
+            frame = raw < 1 ? requestAnimationFrame(tick) : 0;
+          };
+          tick(performance.now());
+        } else render(v.visual || target);
         ui();
         const input = lab.querySelector("input");
         if (input) input.value = String(yaw * 180 / Math.PI);

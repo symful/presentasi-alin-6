@@ -16,7 +16,7 @@
     8: [
       "Diberikan operasi ⟨u,v⟩ = 2u₁v₁ + u₂v₂ + 3u₃v₃.",
       "Apakah operasi berbobot ini memenuhi keempat aksioma hasil kali dalam?",
-      "Keempat aksioma terpenuhi. Normnya adalah √(2u₁²+u₂²+3u₃²); permukaan norm satu berbentuk elipsoid.",
+      "Keempat aksioma terpenuhi. Normnya adalah √(2u₁²+u₂²+3u₃²). permukaan norm satu berbentuk elipsoid.",
       "Dalam pemodelan galat pengukuran, bobot positif memberi pengaruh berbeda pada setiap komponen galat.",
     ],
     12: [
@@ -46,7 +46,7 @@
     18: [
       "Contoh 7 dimulai dari c₁=(1,1,1), c₂=(0,1,1), dan c₃=(0,0,1).",
       "Bagaimana memperoleh w₁ dan w₂ yang saling tegak lurus dan bernorm satu?",
-      "w₁=(1,1,1)/√3 dan w₂=(−2,1,1)/√6. Vektor ketiga belum selesai; pembentukannya dilanjutkan pada slide berikutnya.",
+      "w₁=(1,1,1)/√3 dan w₂=(−2,1,1)/√6. Vektor ketiga belum selesai. pembentukannya dilanjutkan pada slide berikutnya.",
       "Dua arah pertama ini menjadi acuan untuk menghilangkan komponen sejajar dari vektor ketiga.",
     ],
     19: [
@@ -70,7 +70,7 @@
     22: [
       "Gunakan basis ortonormal bidang W yang baru diperoleh dan x=(1,1,1).",
       "Di manakah proyeksi x pada bidang tersebut?",
-      "Proyeksi p=(2/3,2/3,4/3). Sisa r=(1/3,1/3,−1/3) tegak lurus bidang; penjumlahan p+r sama dengan x.",
+      "Proyeksi p=(2/3,2/3,4/3). Sisa r=(1/3,1/3,−1/3) tegak lurus bidang. penjumlahan p+r sama dengan x.",
       "Prinsip ini dipakai dalam pendekatan kuadrat terkecil: memilih hasil pendekatan di subruang dengan galat terkecil.",
     ],
   };
