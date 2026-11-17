@@ -1,12 +1,13 @@
 {
   "tasks": {
-    "start": "deno run --allow-net --allow-read --allow-env server.ts",
-    "dev": "deno run --allow-net --allow-read --allow-env --watch server.ts"
+    "start": "deno run --allow-net --allow-read --allow-env --allow-write=.runtime server.ts",
+    "dev": "deno run --allow-net --allow-read --allow-env --allow-write=.runtime --watch server.ts"
   },
   "deploy": {
     "runtime": {
-      "type": "static",
-      "cwd": "./public"
+      "type": "dynamic",
+      "entrypoint": "./server.ts",
+      "cwd": "."
     },
     "org": "symful",
     "app": "present-alin"
@@ -20,8 +21,11 @@
     "semiColons": true
   },
   "lint": {
-    "exclude": ["public"]
-  }
+    "exclude": [
+      "public"
+    ]
+  },
+  "unstable": [
+    "kv"
+  ]
 }
-
-

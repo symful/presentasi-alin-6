@@ -6,6 +6,8 @@
   <title>Ruang Hasil Kali Dalam | Aljabar Linear Pertemuan 6</title>
   <meta name="description" content="Presentasi Aljabar Linear Pertemuan 6 (Bab VI): definisi ruang hasil kali dalam, himpunan ortonormal, proses Gram-Schmidt, dan proyeksi ortogonal.">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="scenes.css">
+  <link rel="stylesheet" href="session.css">
 </head>
 <body>
   <div class="ambient" aria-hidden="true">
@@ -17,7 +19,7 @@
   <main id="deck" aria-live="polite">
 
     <!-- 1. Sampul -->
-    <section class="slide slide--cover" data-title="Sampul">
+    <section data-chapter="Bab VI / 01" class="slide slide--cover" data-title="Sampul">
       <div class="slide__inner">
         <div class="cover__top">
           <p class="kicker">Aljabar Linear &middot; 16TKO3033 &middot; Bab VI</p>
@@ -30,30 +32,28 @@
         </h1>
 
         <p class="lead cover__lead">
-          Dari panjang dan sudut yang selama ini kita gambar, menuju ukuran yang bisa
-          dihitung: aksioma hasil kali dalam, basis ortonormal, Gram-Schmidt, dan proyeksi.
+          Definisi ruang hasil kali dalam, himpunan ortonormal, proses Gram–Schmidt, dan proyeksi ortogonal.
         </p>
 
         <dl class="meta">
           <div><dt>Pertemuan</dt><dd>6 &middot; Bab VI</dd></div>
-          <div><dt>Program</dt><dd>DIII 2A dan 2B</dd></div>
-          <div><dt>Kompilator</dt><dd>Nurjannah Syakrani<br>Eddy Bambang Soewono</dd></div>
+          <div><dt>Program</dt><dd>D4 2B</dd></div>
         </dl>
 
         <div class="cover__foot">
           <p class="signature">Kelompok 2B &middot; enam anggota</p>
-          <p class="hint">Tekan <kbd>&rarr;</kbd> untuk mulai &middot; <kbd>T</kbd> daftar isi &middot; <kbd>F</kbd> layar penuh</p>
+          <p class="hint"><kbd>A</kbd> / <kbd>←</kbd> kembali · <kbd>D</kbd> / <kbd>→</kbd> lanjut &middot; <kbd>T</kbd> daftar isi &middot; <kbd>F</kbd> layar penuh</p>
         </div>
       </div>
     </section>
 
     <!-- 2. Anggota kelompok -->
-    <section class="slide" data-title="Daftar anggota">
+    <section data-chapter="Bab VI / 02" class="slide" data-title="Daftar anggota">
       <div class="slide__inner">
         <header class="s-head">
           <p class="kicker">Kelompok 2B</p>
-          <h2>Enam orang, satu bab</h2>
-          <p class="s-sub">Setiap anggota mengambil bagian materi dan menyusun latihan bersama.</p>
+          <h2>Anggota Kelompok</h2>
+          <p class="s-sub">Kelompok presentasi Aljabar Linear · D4 2B</p>
         </header>
 
         <ul class="team">
@@ -110,12 +110,12 @@
     </section>
 
     <!-- 3. Peta bahasan -->
-    <section class="slide" data-title="Peta bahasan">
+    <section data-chapter="Bab VI / 03" class="slide" data-title="Peta bahasan">
       <div class="slide__inner">
         <header class="s-head">
           <p class="kicker">Alur pertemuan</p>
-          <h2>Lima bagian, satu pertanyaan</h2>
-          <p class="s-sub">Bagaimana mengukur panjang dan sudut di ruang vektor yang bukan <i>R</i><sup>n</sup>?</p>
+          <h2>Sub Pokok Bahasan</h2>
+          <p class="s-sub">Definisi RHD, himpunan ortonormal, dan proses Gram–Schmidt.</p>
         </header>
 
         <ol class="agenda">
@@ -123,35 +123,35 @@
             <span class="agenda__no">01</span>
             <div>
               <h3>Definisi hasil kali dalam</h3>
-              <p>Empat aturan yang harus dipenuhi sebuah operasi agar sah disebut hasil kali dalam.</p>
+              <p>Empat aksioma yang harus dipenuhi oleh operasi hasil kali dalam.</p>
             </div>
           </li>
           <li class="frag">
             <span class="agenda__no">02</span>
             <div>
               <h3>Norm dan contoh RHD</h3>
-              <p>Panjang dan jarak yang lahir dari hasil kali dalam, lalu empat contoh untuk mengujinya.</p>
+              <p>Definisi norm dan pemeriksaan contoh ruang hasil kali dalam.</p>
             </div>
           </li>
           <li class="frag">
             <span class="agenda__no">03</span>
             <div>
               <h3>Himpunan ortonormal</h3>
-              <p>Vektor yang saling tegak lurus dan panjangnya satu, serta koefisien yang muncul gratis.</p>
+              <p>Himpunan vektor yang saling ortogonal dan memiliki norm satu.</p>
             </div>
           </li>
           <li class="frag">
             <span class="agenda__no">04</span>
             <div>
               <h3>Proses Gram-Schmidt</h3>
-              <p>Resep mengubah basis sembarang menjadi basis ortonormal, langkah demi langkah.</p>
+              <p>Prosedur mengubah basis menjadi basis ortonormal.</p>
             </div>
           </li>
           <li class="frag">
             <span class="agenda__no">05</span>
             <div>
               <h3>Proyeksi ortogonal</h3>
-              <p>Memakai basis ortonormal untuk memecah vektor menjadi bagian di dalam dan di luar subruang.</p>
+              <p>Penentuan proyeksi ortogonal suatu vektor pada subruang.</p>
             </div>
           </li>
         </ol>
@@ -159,50 +159,19 @@
     </section>
 
     <!-- 4. Motivasi -->
-    <section class="slide" data-title="Mengapa perlu">
+    <section data-chapter="Bab VI / 04" class="slide" data-title="Mengapa perlu">
       <div class="slide__inner">
-        <header class="s-head">
-          <p class="kicker">Sebelum definisi</p>
-          <h2>Ruang vektor belum punya meteran</h2>
-        </header>
-
-        <p class="lead">
-          Penjumlahan dan perkalian skalar sudah memberi kita aljabar. Yang belum ada adalah
-          cara mengukur: seberapa panjang sebuah vektor, seberapa lebar sudut antara dua vektor,
-          dan seberapa jauh sebuah vektor dari subruang. Hasil kali dalam mengisi kekosongan itu.
-        </p>
-
-        <div class="cards cards--3">
-          <article class="card frag">
-            <span class="card__mark">01</span>
-            <h3>Panjang</h3>
-            <p>Norm sebuah vektor dihitung dari hasil kali vektor itu dengan dirinya sendiri.</p>
-          </article>
-          <article class="card frag">
-            <span class="card__mark">02</span>
-            <h3>Sudut</h3>
-            <p>Dua vektor tegak lurus tepat ketika hasil kali dalamnya nol, tanpa perlu menggambar.</p>
-          </article>
-          <article class="card frag">
-            <span class="card__mark">03</span>
-            <h3>Proyeksi</h3>
-            <p>Komponen vektor pada arah tertentu bisa dipisahkan dengan bersih.</p>
-          </article>
-        </div>
-
-        <p class="note frag">
-          Penerapan yang paling sering disebut: <strong>metode kuadrat terkecil</strong>
-          (<em>least square</em>) untuk meminimumkan galat pada berbagai persoalan rekayasa.
-        </p>
+        <header class="s-head"><p class="kicker">Bab VI · Ruang Hasil Kali Dalam</p><h2>Ruang Hasil Kali Dalam</h2></header>
+        <p>Diagram interaktif disajikan dengan JavaScript.</p>
       </div>
     </section>
 
     <!-- 5. Definisi -->
-    <section class="slide" data-title="Definisi dan aksioma">
+    <section data-chapter="Bab VI / 05" class="slide" data-title="Definisi dan aksioma">
       <div class="slide__inner">
         <header class="s-head">
           <p class="kicker">Definisi</p>
-          <h2>Empat aksioma hasil kali dalam</h2>
+          <h2>Definisi Ruang Hasil Kali Dalam</h2>
         </header>
 
         <p class="lead">
@@ -224,13 +193,13 @@
             <span class="axiom__no">2</span>
             <h3>Aditivitas</h3>
             <p class="math">&lt;<i>u</i> + <i>v</i>, <i>w</i>&gt; = &lt;<i>u</i>, <i>w</i>&gt; + &lt;<i>v</i>, <i>w</i>&gt;</p>
-            <p class="axiom__note">Hasil kali dalam menghormati penjumlahan vektor.</p>
+            <p class="axiom__note">Hasil kali dalam suatu jumlah sama dengan jumlah hasil kali dalamnya.</p>
           </article>
           <article class="axiom frag">
             <span class="axiom__no">3</span>
             <h3>Homogenitas</h3>
             <p class="math">&lt;<i>k</i><i>u</i>, <i>v</i>&gt; = <i>k</i>&lt;<i>u</i>, <i>v</i>&gt;</p>
-            <p class="axiom__note">Skalar boleh dikeluarkan dari hasil kali.</p>
+            <p class="axiom__note">Mengalikan vektor dengan k membuat hasil kali dalamnya juga dikalikan k.</p>
           </article>
           <article class="axiom frag">
             <span class="axiom__no">4</span>
@@ -242,109 +211,46 @@
 
         <p class="note frag">
           Ruang vektor yang dilengkapi hasil kali dalam disebut <strong>ruang hasil kali dalam</strong>
-          (RHD). Jadi RHD = ruang vektor + satu operasi yang lolos empat ujian di atas.
+          (RHD). Operasi tersebut memenuhi keempat aksioma hasil kali dalam.
         </p>
       </div>
     </section>
 
     <!-- 6. Norm -->
-    <section class="slide" data-title="Norm dan jarak">
+    <section data-chapter="Bab VI / 06" class="slide" data-title="Norm dan jarak">
       <div class="slide__inner">
-        <header class="s-head">
-          <p class="kicker">Akibat langsung</p>
-          <h2>Norm dan jarak lahir dari hasil kali dalam</h2>
-        </header>
-
-        <div class="split">
-          <div>
-            <p>
-              Begitu hasil kali dalam ada, panjang sebuah vektor tidak perlu didefinisikan ulang.
-              Cukup kalikan vektor itu dengan dirinya sendiri, lalu ambil akarnya.
-            </p>
-            <p class="math math--lg">&#8214;<i>u</i>&#8214; = <span class="sqrt">&radic;<span class="under">&lt;<i>u</i>, <i>u</i>&gt;</span></span></p>
-            <p class="frag">
-              Jarak antara dua vektor adalah panjang selisihnya:
-              <span class="ip"><i>d</i>(<i>u</i>, <i>v</i>) = &#8214;<i>u</i> &minus; <i>v</i>&#8214;</span>.
-            </p>
-          </div>
-          <div class="panel">
-            <h3>Di ruang Euclides <i>R</i><sup>n</sup></h3>
-            <p class="math">&#8214;<i>u</i>&#8214; = <span class="sqrt">&radic;<span class="under"><i>u</i><sub>1</sub><sup>2</sup> + <i>u</i><sub>2</sub><sup>2</sup> + &hellip; + <i>u</i><sub>n</sub><sup>2</sup></span></span></p>
-            <p class="small">Tidak lain rumus Pythagoras yang diperluas ke <i>n</i> dimensi.</p>
-          </div>
-        </div>
-
-        <p class="note frag">
-          Aksioma positivitas menjamin norm tidak pernah negatif, dan bernilai nol hanya untuk vektor nol.
-        </p>
+        <header class="s-head"><p class="kicker">Bab VI · Ruang Hasil Kali Dalam</p><h2>Norm (Panjang Vektor)</h2></header>
+        <p>Diagram interaktif disajikan dengan JavaScript.</p>
       </div>
     </section>
 
     <!-- 7. Contoh 1 -->
-    <section class="slide" data-title="Contoh 1: RHD Euclides">
+    <section data-chapter="Bab VI / 07" class="slide" data-title="Contoh 1: RHD Euclides">
       <div class="slide__inner">
-        <header class="s-head">
-          <p class="kicker">Contoh 1</p>
-          <h2>Hasil kali dalam Euclides di <i>R</i><sup>n</sup></h2>
-        </header>
-
-        <p class="lead">
-          Untuk <span class="ip"><i>u</i>, <i>v</i> &isin; <i>R</i><sup>n</sup></span>, jumlahkan
-          hasil kali komponen yang bersesuaian. Inilah hasil kali dalam yang biasa kita pakai,
-          dan keempat aksiomanya dapat diperiksa satu per satu.
-        </p>
-
-        <p class="math math--lg">&lt;<i>u</i>, <i>v</i>&gt; = <i>u</i><sub>1</sub><i>v</i><sub>1</sub> + <i>u</i><sub>2</sub><i>v</i><sub>2</sub> + &hellip; + <i>u</i><sub>n</sub><i>v</i><sub>n</sub></p>
-
-        <ul class="checks">
-          <li class="frag"><strong>Simetris.</strong> Setiap suku <span class="ip"><i>u</i><sub>i</sub><i>v</i><sub>i</sub></span> sama dengan <span class="ip"><i>v</i><sub>i</sub><i>u</i><sub>i</sub></span>, jadi urutan tidak mengubah hasil.</li>
-          <li class="frag"><strong>Aditif.</strong> Setiap suku memenuhi <span class="ip">(<i>u</i><sub>i</sub> + <i>v</i><sub>i</sub>)<i>w</i><sub>i</sub> = <i>u</i><sub>i</sub><i>w</i><sub>i</sub> + <i>v</i><sub>i</sub><i>w</i><sub>i</sub></span>, lalu dijumlahkan.</li>
-          <li class="frag"><strong>Homogen.</strong> Faktor <i>k</i> dapat dikeluarkan dari setiap suku.</li>
-          <li class="frag"><strong>Positif.</strong> <span class="ip">&lt;<i>u</i>, <i>u</i>&gt; = <i>u</i><sub>1</sub><sup>2</sup> + &hellip; + <i>u</i><sub>n</sub><sup>2</sup> &ge; 0</span>, dan nol hanya bila semua komponennya nol.</li>
-        </ul>
-
-        <p class="verdict verdict--ok frag">Keempat aksioma terpenuhi, jadi operasi ini hasil kali dalam.</p>
+        <header class="s-head"><p class="kicker">Bab VI · Ruang Hasil Kali Dalam</p><h2>RHD Euclides</h2></header>
+        <p>Diagram interaktif disajikan dengan JavaScript.</p>
       </div>
     </section>
 
     <!-- 8. Contoh 2 -->
-    <section class="slide" data-title="Contoh 2: berbobot">
+    <section data-chapter="Bab VI / 08" class="slide" data-title="Contoh 2: berbobot">
       <div class="slide__inner">
-        <header class="s-head">
-          <p class="kicker">Contoh 2</p>
-          <h2>Memberi bobot berbeda pada tiap sumbu</h2>
-        </header>
-
-        <p class="lead">
-          Misalkan <i>W</i> himpunan vektor di <i>R</i><sup>3</sup> dengan operasi berbobot berikut.
-          Bobot 2, 1, dan 3 tidak merusak aksioma selama semuanya positif. Tunjukkan bahwa
-          <i>W</i> adalah RHD.
-        </p>
-
-        <p class="math math--lg">&lt;<i>u</i>, <i>v</i>&gt; = 2<i>u</i><sub>1</sub><i>v</i><sub>1</sub> + <i>u</i><sub>2</sub><i>v</i><sub>2</sub> + 3<i>u</i><sub>3</sub><i>v</i><sub>3</sub></p>
-
-        <div class="proof">
-          <p class="frag"><span class="tag">i</span> <strong>Simetris.</strong> <span class="ip">2<i>u</i><sub>1</sub><i>v</i><sub>1</sub> + <i>u</i><sub>2</sub><i>v</i><sub>2</sub> + 3<i>u</i><sub>3</sub><i>v</i><sub>3</sub></span> = <span class="ip">2<i>v</i><sub>1</sub><i>u</i><sub>1</sub> + <i>v</i><sub>2</sub><i>u</i><sub>2</sub> + 3<i>v</i><sub>3</sub><i>u</i><sub>3</sub></span>. Terbukti.</p>
-          <p class="frag"><span class="tag">ii</span> <strong>Aditivitas.</strong> Substitusi <span class="ip"><i>u</i> + <i>v</i></span> memberi <span class="ip">2(<i>u</i><sub>1</sub> + <i>v</i><sub>1</sub>)<i>w</i><sub>1</sub> + (<i>u</i><sub>2</sub> + <i>v</i><sub>2</sub>)<i>w</i><sub>2</sub> + 3(<i>u</i><sub>3</sub> + <i>v</i><sub>3</sub>)<i>w</i><sub>3</sub></span>. Setelah dijabarkan dan dikelompokkan, hasilnya sama dengan jumlah kedua hasil kali dalam. Terbukti.</p>
-          <p class="frag"><span class="tag">iii</span> <strong>Homogenitas.</strong> <span class="ip">&lt;<i>k</i><i>u</i>, <i>v</i>&gt; = 2<i>k</i><i>u</i><sub>1</sub><i>v</i><sub>1</sub> + <i>k</i><i>u</i><sub>2</sub><i>v</i><sub>2</sub> + 3<i>k</i><i>u</i><sub>3</sub><i>v</i><sub>3</sub> = <i>k</i>&lt;<i>u</i>, <i>v</i>&gt;</span>. Terbukti.</p>
-          <p class="frag"><span class="tag">iv</span> <strong>Positivitas.</strong> <span class="ip">&lt;<i>u</i>, <i>u</i>&gt; = 2<i>u</i><sub>1</sub><sup>2</sup> + <i>u</i><sub>2</sub><sup>2</sup> + 3<i>u</i><sub>3</sub><sup>2</sup> &ge; 0</span>, dan nol hanya bila <span class="ip"><i>u</i><sub>1</sub> = <i>u</i><sub>2</sub> = <i>u</i><sub>3</sub> = 0</span>. Terbukti.</p>
-        </div>
-
-        <p class="verdict verdict--ok frag">Semua aksioma terpenuhi, jadi <i>W</i> adalah ruang hasil kali dalam.</p>
+        <header class="s-head"><p class="kicker">Bab VI · Ruang Hasil Kali Dalam</p><h2>Hasil Kali Dalam Berbobot</h2></header>
+        <p>Diagram interaktif disajikan dengan JavaScript.</p>
       </div>
     </section>
 
     <!-- 9. Contoh 3 -->
-    <section class="slide" data-title="Contoh 3: bukan RHD">
+    <section data-chapter="Bab VI / 09" class="slide" data-title="Contoh 3: bukan RHD">
       <div class="slide__inner">
         <header class="s-head">
           <p class="kicker">Contoh 3</p>
-          <h2>Satu aksioma gagal, semuanya gugur</h2>
+          <h2>Pemeriksaan Sifat Positivitas</h2>
         </header>
 
         <p class="lead">
           Perhatikan operasi berikut pada <i>R</i><sup>3</sup>. Komponen ketiga diberi tanda
-          negatif, dan justru tanda inilah yang menjatuhkannya.
+          negatif, sehingga perlu diperiksa sifat positivitasnya.
         </p>
 
         <p class="math math--lg">&lt;<i>u</i>, <i>v</i>&gt; = <i>u</i><sub>1</sub><i>v</i><sub>1</sub> + 2<i>u</i><sub>2</sub><i>v</i><sub>2</sub> &minus; 3<i>u</i><sub>3</sub><i>v</i><sub>3</sub></p>
@@ -358,129 +264,58 @@
           <div class="panel panel--bad frag">
             <h3>Kesimpulan</h3>
             <p>Hasil kali sebuah vektor bukan nol dengan dirinya sendiri bernilai negatif. Aksioma positivitas dilanggar.</p>
-            <p class="small">Satu aksioma saja gagal sudah cukup. Tiga aksioma lainnya tidak perlu diperiksa.</p>
+            <p class="small">Kegagalan salah satu aksioma cukup untuk menyatakan bahwa operasi ini bukan hasil kali dalam.</p>
           </div>
         </div>
       </div>
     </section>
 
     <!-- 10. Contoh 4 -->
-    <section class="slide" data-title="Contoh 4: ruang matriks">
-      <div class="slide__inner">
-        <header class="s-head">
-          <p class="kicker">Contoh 4</p>
-          <h2>Ketika sebagian entri diabaikan</h2>
-        </header>
-
-        <p class="lead">
-          Pada ruang matriks 2 &times; 2, didefinisikan operasi yang hanya memakai kolom pertama
-          dari kedua matriks. Apakah ini hasil kali dalam?
-        </p>
-
-        <p class="math math--lg">&lt;<i>A</i>, <i>B</i>&gt; = <i>a</i><sub>11</sub><i>b</i><sub>11</sub> + <i>a</i><sub>21</sub><i>b</i><sub>21</sub></p>
-
-        <div class="split">
-          <div>
-            <p class="frag">
-              Untuk <span class="ip"><i>A</i> =</span>
-              <span class="mat"><span><i>a</i></span><span><i>b</i></span><span><i>c</i></span><span><i>d</i></span></span>
-              berlaku <span class="ip">&lt;<i>A</i>, <i>A</i>&gt; = <i>a</i><sup>2</sup> + <i>c</i><sup>2</sup></span>.
-            </p>
-            <p class="frag">
-              Ambil <span class="ip"><i>A</i> =</span>
-              <span class="mat"><span>0</span><span>1</span><span>0</span><span>0</span></span>
-              yang jelas bukan matriks nol.
-            </p>
-          </div>
-          <div class="panel panel--bad frag">
-            <h3>Hasil pemeriksaan</h3>
-            <p class="math"><i>a</i><sup>2</sup> + <i>c</i><sup>2</sup> = 0</p>
-            <p>Padahal matriks tersebut bukan matriks nol. Aksioma terakhir tidak terpenuhi, sehingga operasi ini bukan hasil kali dalam.</p>
-          </div>
-        </div>
-      </div>
-    </section>
+    <section class="slide" data-title="Contoh 4: bukan hasil kali dalam" data-chapter="Bab VI / 10">
+      <div class="slide__inner"><header class="s-head"><p class="kicker">Contoh 4</p><h2>Operasi yang Bukan Hasil Kali Dalam</h2></header>
+      <p class="lead">Diketahui u = (a,b,c), v = (d,e,f), dan operasi ⟨u,v⟩ = ad + cf. Apakah operasi tersebut merupakan hasil kali dalam?</p>
+      <div class="split"><div class="calc"><p class="math frag">⟨u,u⟩ = a² + c² ≥ 0</p><p class="frag">Misalkan u = (0,2,0), sehingga u ≠ 0.</p><p class="math math--lg frag">⟨u,u⟩ = 0² + 0² = 0</p></div>
+      <div class="panel panel--bad frag"><h3>Aksioma positivitas tidak terpenuhi</h3><p>Terdapat vektor bukan nol yang hasil kali dengan dirinya sendiri bernilai nol.</p><p class="math">⟨u,u⟩ = 0, tetapi u ≠ 0</p></div></div>
+      <p class="note frag">Jadi, operasi ⟨u,v⟩ = ad + cf bukan merupakan hasil kali dalam.</p></div></section>
 
     <!-- 11. Pembatas bagian -->
-    <section class="slide slide--divider" data-title="Bagian: ortonormal">
+    <section data-chapter="Bab VI / 11" class="slide slide--divider" data-title="Bagian: ortonormal">
       <div class="slide__inner">
         <p class="kicker">Bagian ketiga</p>
-        <h2>Himpunan<br><span class="accent-text">Ortonormal</span></h2>
-        <p class="lead">Tegak lurus, panjang satu, dan koefisien yang bisa dibaca langsung tanpa menyelesaikan sistem persamaan.</p>
+        <h2>Himpunan Ortonormal</h2>
+        <p class="lead">Himpunan ortogonal yang setiap vektornya memiliki norm satu.</p>
         <p class="divider__num" aria-hidden="true">03</p>
       </div>
     </section>
 
     <!-- 12. Ortogonal dan ortonormal -->
-    <section class="slide" data-title="Definisi ortogonal">
+    <section data-chapter="Bab VI / 12" class="slide" data-title="Definisi ortogonal">
       <div class="slide__inner">
-        <header class="s-head">
-          <p class="kicker">Definisi</p>
-          <h2>Ortogonal vs ortonormal</h2>
-        </header>
-
-        <div class="cards cards--2">
-          <article class="card frag">
-            <h3>Himpunan ortogonal</h3>
-            <p>Setiap pasangan vektor yang berbeda saling tegak lurus.</p>
-            <p class="math">&lt;<i>c</i><sub>i</sub>, <i>c</i><sub>j</sub>&gt; = 0 untuk setiap <i>i</i> &ne; <i>j</i></p>
-          </article>
-          <article class="card frag">
-            <h3>Himpunan ortonormal</h3>
-            <p>Himpunan ortogonal yang setiap vektornya berpanjang satu.</p>
-            <p class="math">&lt;<i>c</i><sub>i</sub>, <i>c</i><sub>j</sub>&gt; = 1 bila <i>i</i> = <i>j</i>, dan 0 bila <i>i</i> &ne; <i>j</i></p>
-          </article>
-        </div>
-
-        <p class="note frag">
-          Notasi ringkasnya <span class="ip">&lt;<i>c</i><sub>i</sub>, <i>c</i><sub>j</sub>&gt; = &delta;<sub>ij</sub></span>
-          dengan &delta; delta Kronecker. Himpunan ortonormal selalu bebas linear, sehingga bisa dipakai sebagai basis.
-        </p>
+        <header class="s-head"><p class="kicker">Bab VI · Ruang Hasil Kali Dalam</p><h2>Himpunan Ortogonal dan Ortonormal</h2></header>
+        <p>Diagram interaktif disajikan dengan JavaScript.</p>
       </div>
     </section>
 
     <!-- 13. Contoh 5 -->
-    <section class="slide" data-title="Contoh 5: uji ortonormal">
+    <section data-chapter="Bab VI / 13" class="slide" data-title="Contoh 5: uji ortonormal">
       <div class="slide__inner">
-        <header class="s-head">
-          <p class="kicker">Contoh 5</p>
-          <h2>Tiga himpunan di <i>R</i><sup>2</sup>, satu ujian</h2>
-        </header>
-
-        <p class="lead">Semua pemeriksaan memakai hasil kali dalam Euclides. Cukup cek hasil kali antarvektor dan panjang tiap vektor.</p>
-
-        <div class="rows">
-          <div class="row frag">
-            <p class="row__set"><i>A</i> = {(1, 0), (1, 1)}</p>
-            <p class="row__calc">&lt;(1, 0), (1, 1)&gt; = 1 &middot; 1 + 0 &middot; 1 = 1 &ne; 0</p>
-            <p class="row__verdict bad">Bukan ortogonal</p>
-          </div>
-          <div class="row frag">
-            <p class="row__set"><i>B</i> = {(1, 0), (0, 1)}</p>
-            <p class="row__calc">&lt;(1, 0), (0, 1)&gt; = 0, dan &#8214;(1, 0)&#8214; = &#8214;(0, 1)&#8214; = 1</p>
-            <p class="row__verdict ok">Ortonormal</p>
-          </div>
-          <div class="row frag">
-            <p class="row__set"><i>C</i> = {(1/&radic;2, 1/&radic;2), (&minus;1/&radic;2, 1/&radic;2)}</p>
-            <p class="row__calc">Hasil kali kedua vektor = &minus;1/2 + 1/2 = 0, dan norm tiap vektor 1</p>
-            <p class="row__verdict ok">Ortonormal</p>
-          </div>
-        </div>
+        <header class="s-head"><p class="kicker">Bab VI · Ruang Hasil Kali Dalam</p><h2>Contoh Himpunan Ortonormal</h2></header>
+        <p>Diagram interaktif disajikan dengan JavaScript.</p>
       </div>
     </section>
 
     <!-- 14. Kombinasi linear -->
-    <section class="slide" data-title="Basis ortonormal">
+    <section data-chapter="Bab VI / 14" class="slide" data-title="Basis ortonormal">
       <div class="slide__inner">
         <header class="s-head">
           <p class="kicker">Sifat penting</p>
-          <h2>Koefisien yang muncul gratis</h2>
+          <h2>Kombinasi Linear pada Basis Ortonormal</h2>
         </header>
 
         <p class="lead">
           Misalkan <span class="ip">{<i>w</i><sub>1</sub>, &hellip;, <i>w</i><sub>n</sub>}</span>
           basis ortonormal bagi RHD <i>V</i> dan <i>v</i> sebarang vektor di <i>V</i>.
-          Pada basis biasa kita harus menyelesaikan sistem persamaan; pada basis ortonormal,
+          Pada basis biasa, koefisien ditentukan dengan menyelesaikan sistem persamaan; pada basis ortonormal,
           setiap koefisien cukup dihitung dengan satu hasil kali dalam.
         </p>
 
@@ -492,271 +327,100 @@
           <div class="panel">
             <h3>Alasannya</h3>
             <p class="math">&lt;<i>v</i>, <i>w</i><sub>j</sub>&gt; = &sum; <i>k</i><sub>i</sub>&lt;<i>w</i><sub>i</sub>, <i>w</i><sub>j</sub>&gt;</p>
-            <p>Semua suku lenyap kecuali saat <span class="ip"><i>i</i> = <i>j</i></span>, karena <span class="ip">&lt;<i>w</i><sub>i</sub>, <i>w</i><sub>j</sub>&gt; = 0</span>. Suku yang tersisa bernilai <span class="ip"><i>k</i><sub>j</sub> &middot; 1</span>.</p>
+            <p>Semua suku bernilai nol kecuali saat <span class="ip"><i>i</i> = <i>j</i></span>, karena <span class="ip">&lt;<i>w</i><sub>i</sub>, <i>w</i><sub>j</sub>&gt; = 0</span>. Suku yang tersisa bernilai <span class="ip"><i>k</i><sub>j</sub> &middot; 1</span>.</p>
           </div>
         </div>
       </div>
     </section>
 
     <!-- 15. Contoh 6 -->
-    <section class="slide" data-title="Contoh 6: koefisien">
+    <section data-chapter="Bab VI / 15" class="slide" data-title="Contoh 6: koefisien">
       <div class="slide__inner">
-        <header class="s-head">
-          <p class="kicker">Contoh 6</p>
-          <h2>Menulis vektor pada basis ortonormal</h2>
-        </header>
-
-        <p class="lead">
-          Diketahui <span class="ip"><i>w</i><sub>1</sub> = (3/5, 4/5)</span> dan
-          <span class="ip"><i>w</i><sub>2</sub> = (&minus;4/5, 3/5)</span> basis ortonormal bagi
-          <i>R</i><sup>2</sup>. Nyatakan <span class="ip"><i>v</i> = (7, 1)</span> pada basis tersebut.
-        </p>
-
-        <div class="split">
-          <div class="calc">
-            <p class="frag"><i>k</i><sub>1</sub> = &lt;<i>v</i>, <i>w</i><sub>1</sub>&gt; = 7 &middot; 3/5 + 1 &middot; 4/5 = 25/5 = 5</p>
-            <p class="frag"><i>k</i><sub>2</sub> = &lt;<i>v</i>, <i>w</i><sub>2</sub>&gt; = 7 &middot; (&minus;4/5) + 1 &middot; 3/5 = &minus;25/5 = &minus;5</p>
-          </div>
-          <div class="panel">
-            <h3>Hasil</h3>
-            <p class="math math--lg"><i>v</i> = 5<i>w</i><sub>1</sub> &minus; 5<i>w</i><sub>2</sub></p>
-            <p class="small">Periksa: 5(3/5, 4/5) &minus; 5(&minus;4/5, 3/5) = (3, 4) + (4, &minus;3) = (7, 1). Benar.</p>
-          </div>
-        </div>
+        <header class="s-head"><p class="kicker">Bab VI · Ruang Hasil Kali Dalam</p><h2>Contoh 6: Kombinasi Linear</h2></header>
+        <p>Diagram interaktif disajikan dengan JavaScript.</p>
       </div>
     </section>
 
     <!-- 16. Gerbang Gram-Schmidt -->
-    <section class="slide slide--divider" data-title="Bagian: Gram-Schmidt">
+    <section data-chapter="Bab VI / 16" class="slide slide--divider" data-title="Bagian: Gram-Schmidt">
       <div class="slide__inner">
         <p class="kicker">Bagian empat</p>
-        <h2>Proses<br><span class="accent-text">Gram-Schmidt</span></h2>
+        <h2>Proses Gram–Schmidt</h2>
         <p class="lead">Mengubah basis sembarang menjadi basis ortonormal, tanpa mengubah ruang yang direntang.</p>
         <p class="divider__num" aria-hidden="true">04</p>
       </div>
     </section>
 
     <!-- 17. Langkah Gram-Schmidt -->
-    <section class="slide" data-title="Langkah Gram-Schmidt">
+    <section data-chapter="Bab VI / 17" class="slide" data-title="Langkah Gram-Schmidt">
       <div class="slide__inner">
-        <header class="s-head">
-          <p class="kicker">Prosedur</p>
-          <h2>Tiga langkah yang berulang</h2>
-        </header>
-
-        <p class="lead">
-          Andaikan <span class="ip"><i>S</i> = {<i>c</i><sub>1</sub>, <i>c</i><sub>2</sub>, &hellip;, <i>c</i><sub>n</sub>}</span>
-          basis bagi RHD <i>V</i>. Hasil akhirnya adalah basis ortonormal
-          <span class="ip"><i>B</i> = {<i>w</i><sub>1</sub>, <i>w</i><sub>2</sub>, &hellip;, <i>w</i><sub>n</sub>}</span>.
-        </p>
-
-        <div class="steps-list">
-          <article class="frag">
-            <span class="step-no">1</span>
-            <div>
-              <p>Ambil vektor pertama, lalu normalisasi.</p>
-              <p class="math"><i>w</i><sub>1</sub> = <span class="frac"><span><i>c</i><sub>1</sub></span><span>&#8214;<i>c</i><sub>1</sub>&#8214;</span></span></p>
-            </div>
-          </article>
-          <article class="frag">
-            <span class="step-no">2</span>
-            <div>
-              <p>Buang komponen <span class="ip"><i>c</i><sub>2</sub></span> yang searah <span class="ip"><i>w</i><sub>1</sub></span>, lalu normalisasi sisanya.</p>
-              <p class="math"><i>u</i><sub>2</sub> = <i>c</i><sub>2</sub> &minus; &lt;<i>c</i><sub>2</sub>, <i>w</i><sub>1</sub>&gt;<i>w</i><sub>1</sub> &nbsp;&nbsp;&rarr;&nbsp;&nbsp; <i>w</i><sub>2</sub> = <span class="frac"><span><i>u</i><sub>2</sub></span><span>&#8214;<i>u</i><sub>2</sub>&#8214;</span></span></p>
-            </div>
-          </article>
-          <article class="frag">
-            <span class="step-no">3</span>
-            <div>
-              <p>Buang komponen <span class="ip"><i>c</i><sub>3</sub></span> pada arah <span class="ip"><i>w</i><sub>1</sub></span> dan <span class="ip"><i>w</i><sub>2</sub></span>, lalu normalisasi.</p>
-              <p class="math"><i>u</i><sub>3</sub> = <i>c</i><sub>3</sub> &minus; &lt;<i>c</i><sub>3</sub>, <i>w</i><sub>1</sub>&gt;<i>w</i><sub>1</sub> &minus; &lt;<i>c</i><sub>3</sub>, <i>w</i><sub>2</sub>&gt;<i>w</i><sub>2</sub> &nbsp;&nbsp;&rarr;&nbsp;&nbsp; <i>w</i><sub>3</sub> = <span class="frac"><span><i>u</i><sub>3</sub></span><span>&#8214;<i>u</i><sub>3</sub>&#8214;</span></span></p>
-            </div>
-          </article>
-        </div>
+        <header class="s-head"><p class="kicker">Bab VI · Ruang Hasil Kali Dalam</p><h2>Langkah Proses Gram–Schmidt</h2></header>
+        <p>Diagram interaktif disajikan dengan JavaScript.</p>
       </div>
     </section>
 
     <!-- 18. Contoh 7 -->
-    <section class="slide" data-title="Contoh 7: Gram-Schmidt di R3">
+    <section data-chapter="Bab VI / 18" class="slide" data-title="Contoh 7: Gram-Schmidt di R3">
       <div class="slide__inner">
-        <header class="s-head">
-          <p class="kicker">Contoh 7</p>
-          <h2>Mengortonormalkan basis di <i>R</i><sup>3</sup></h2>
-        </header>
-
-        <p class="lead">
-          Diketahui <span class="ip"><i>B</i> = {(1, 1, 1), (1, 1, 0), (1, 0, 0)}</span> basis bagi
-          <i>R</i><sup>3</sup> dengan hasil kali dalam Euclides. Transformasikan menjadi basis ortonormal.
-        </p>
-
-        <div class="steps-list steps-list--tight">
-          <article class="frag">
-            <span class="step-no">1</span>
-            <div>
-              <p class="math">&#8214;<i>c</i><sub>1</sub>&#8214; = &radic;3 &nbsp;&nbsp;&rarr;&nbsp;&nbsp; <i>w</i><sub>1</sub> = <span class="frac"><span>(1, 1, 1)</span><span>&radic;3</span></span></p>
-            </div>
-          </article>
-          <article class="frag">
-            <span class="step-no">2</span>
-            <div>
-              <p class="math">&lt;<i>c</i><sub>2</sub>, <i>w</i><sub>1</sub>&gt; = 2/&radic;3, sehingga <i>u</i><sub>2</sub> = (1, 1, 0) &minus; <span class="frac"><span>2</span><span>3</span></span>(1, 1, 1) = (1/3, 1/3, &minus;2/3)</p>
-              <p class="math">&#8214;<i>u</i><sub>2</sub>&#8214; = &radic;6/3 &nbsp;&nbsp;&rarr;&nbsp;&nbsp; <i>w</i><sub>2</sub> = <span class="frac"><span>(1, 1, &minus;2)</span><span>&radic;6</span></span></p>
-            </div>
-          </article>
-        </div>
-
-        <p class="note frag">Dua vektor pertama sudah ortonormal. Periksa cepat: <span class="ip">&lt;<i>w</i><sub>1</sub>, <i>w</i><sub>2</sub>&gt; = (1 &minus; 2 + 0)/&radic;18 = 0</span>.</p>
+        <header class="s-head"><p class="kicker">Bab VI · Ruang Hasil Kali Dalam</p><h2>Contoh 7: Ortonormalisasi</h2></header>
+        <p>Diagram interaktif disajikan dengan JavaScript.</p>
       </div>
     </section>
 
     <!-- 19. Contoh 7, langkah ketiga -->
-    <section class="slide" data-title="Contoh 7: langkah ketiga">
+    <section data-chapter="Bab VI / 19" class="slide" data-title="Contoh 7: langkah ketiga">
       <div class="slide__inner">
-        <header class="s-head">
-          <p class="kicker">Contoh 7 lanjutan</p>
-          <h2>Langkah ketiga: bersihkan dua arah sekaligus</h2>
-        </header>
-
-        <p class="lead">
-          Vektor ketiga dibersihkan dari arah <span class="ip"><i>w</i><sub>1</sub></span> dan
-          <span class="ip"><i>w</i><sub>2</sub></span>, lalu sisanya dinormalisasi.
-        </p>
-
-        <div class="steps-list steps-list--tight">
-          <article class="frag">
-            <span class="step-no">3</span>
-            <div>
-              <p class="math">&lt;<i>c</i><sub>3</sub>, <i>w</i><sub>1</sub>&gt; = 1/&radic;3 &nbsp;&nbsp;dan&nbsp;&nbsp; &lt;<i>c</i><sub>3</sub>, <i>w</i><sub>2</sub>&gt; = 1/&radic;6, sehingga</p>
-              <p class="math"><i>u</i><sub>3</sub> = (1, 0, 0) &minus; <span class="frac"><span>1</span><span>3</span></span>(1, 1, 1) &minus; <span class="frac"><span>1</span><span>6</span></span>(1, 1, &minus;2) = (1/2, &minus;1/2, 0)</p>
-              <p class="math">&#8214;<i>u</i><sub>3</sub>&#8214; = 1/&radic;2 &nbsp;&nbsp;&rarr;&nbsp;&nbsp; <i>w</i><sub>3</sub> = <span class="frac"><span>(1, &minus;1, 0)</span><span>&radic;2</span></span></p>
-            </div>
-          </article>
-        </div>
-
-        <p class="verdict verdict--ok frag">
-          Basis ortonormal bagi <i>R</i><sup>3</sup>:
-          {(1, 1, 1)/&radic;3, (1, 1, &minus;2)/&radic;6, (1, &minus;1, 0)/&radic;2}.
-        </p>
+        <header class="s-head"><p class="kicker">Bab VI · Ruang Hasil Kali Dalam</p><h2>Contoh 7: Langkah Ketiga</h2></header>
+        <p>Diagram interaktif disajikan dengan JavaScript.</p>
       </div>
     </section>
 
     <!-- 20. Proyeksi -->
-    <section class="slide" data-title="Proyeksi ortogonal">
+    <section data-chapter="Bab VI / 20" class="slide" data-title="Proyeksi ortogonal">
       <div class="slide__inner">
-        <header class="s-head">
-          <p class="kicker">Penerapan</p>
-          <h2>Proyeksi ortogonal pada subruang</h2>
-        </header>
-
-        <p class="lead">
-          Bila <span class="ip">{<i>w</i><sub>1</sub>, &hellip;, <i>w</i><sub>k</sub>}</span>
-          basis ortonormal bagi subruang <i>W</i>, proyeksi sebarang vektor <i>v</i> pada <i>W</i>
-          cukup dijumlahkan suku demi suku. Inilah upah dari ortonormalitas.
-        </p>
-
-        <p class="math math--lg">proj<sub><i>W</i></sub> <i>v</i> = &lt;<i>v</i>, <i>w</i><sub>1</sub>&gt;<i>w</i><sub>1</sub> + &lt;<i>v</i>, <i>w</i><sub>2</sub>&gt;<i>w</i><sub>2</sub> + &hellip; + &lt;<i>v</i>, <i>w</i><sub>k</sub>&gt;<i>w</i><sub>k</sub></p>
-
-        <div class="split">
-          <div>
-            <h3 class="sub">Sifat sisa</h3>
-            <p>Vektor sisa <span class="ip"><i>v</i> &minus; proj<sub><i>W</i></sub> <i>v</i></span> tegak lurus terhadap seluruh <i>W</i>. Inilah dasar metode kuadrat terkecil.</p>
-          </div>
-          <div class="panel">
-            <h3>Urutan kerja</h3>
-            <ol class="mini">
-              <li>Pastikan pembangun <i>W</i> bebas linear.</li>
-              <li>Ortonormalkan dengan Gram-Schmidt.</li>
-              <li>Hitung proyeksi memakai rumus di atas.</li>
-            </ol>
-          </div>
-        </div>
+        <header class="s-head"><p class="kicker">Bab VI · Ruang Hasil Kali Dalam</p><h2>Proyeksi Ortogonal</h2></header>
+        <p>Diagram interaktif disajikan dengan JavaScript.</p>
       </div>
     </section>
 
     <!-- 21. Contoh 8 -->
-    <section class="slide" data-title="Contoh 8: proyeksi">
+    <section data-chapter="Bab VI / 21" class="slide" data-title="Contoh 8: proyeksi">
       <div class="slide__inner">
-        <header class="s-head">
-          <p class="kicker">Contoh 8</p>
-          <h2>Proyeksi pada bidang di <i>R</i><sup>3</sup></h2>
-        </header>
-
-        <p class="lead">
-          Bidang <i>W</i> dibangun oleh <span class="ip"><i>a</i> = (1, 1, 0)</span> dan
-          <span class="ip"><i>b</i> = (1, 0, 1)</span>. Tentukan proyeksi ortogonal
-          <span class="ip"><i>x</i> = (1, 2, 3)</span> pada <i>W</i>. Langkah pertamanya:
-          ortonormalkan pembangunnya.
-        </p>
-
-        <div class="steps-list steps-list--tight">
-          <article class="frag">
-            <span class="step-no">1</span>
-            <div>
-              <p class="math">&#8214;<i>a</i>&#8214; = &radic;2 &nbsp;&nbsp;&rarr;&nbsp;&nbsp; <i>e</i><sub>1</sub> = <span class="frac"><span>(1, 1, 0)</span><span>&radic;2</span></span></p>
-            </div>
-          </article>
-          <article class="frag">
-            <span class="step-no">2</span>
-            <div>
-              <p class="math">&lt;<i>b</i>, <i>e</i><sub>1</sub>&gt; = 1/&radic;2, sehingga <i>b</i>&prime; = (1, 0, 1) &minus; <span class="frac"><span>1</span><span>2</span></span>(1, 1, 0) = (1/2, &minus;1/2, 1)</p>
-              <p class="math">&#8214;<i>b</i>&prime;&#8214; = &radic;6/2 &nbsp;&nbsp;&rarr;&nbsp;&nbsp; <i>e</i><sub>2</sub> = <span class="frac"><span>(1, &minus;1, 2)</span><span>&radic;6</span></span></p>
-            </div>
-          </article>
-        </div>
-
-        <p class="note frag">Basis ortonormal bidang <i>W</i>: {(1, 1, 0)/&radic;2, (1, &minus;1, 2)/&radic;6}.</p>
+        <header class="s-head"><p class="kicker">Bab VI · Ruang Hasil Kali Dalam</p><h2>Contoh 8: Basis Ortonormal</h2></header>
+        <p>Diagram interaktif disajikan dengan JavaScript.</p>
       </div>
     </section>
 
     <!-- 22. Contoh 8, proyeksi -->
-    <section class="slide" data-title="Contoh 8: hasil proyeksi">
+    <section data-chapter="Bab VI / 22" class="slide" data-title="Contoh 8: hasil proyeksi">
       <div class="slide__inner">
-        <header class="s-head">
-          <p class="kicker">Contoh 8 lanjutan</p>
-          <h2>Menghitung proyeksinya</h2>
-        </header>
-
-        <p class="lead">Dengan basis ortonormal yang sudah didapat, proyeksi cukup dijumlahkan suku demi suku.</p>
-
-        <div class="steps-list steps-list--tight">
-          <article class="frag">
-            <span class="step-no">3</span>
-            <div>
-              <p class="math">&lt;<i>x</i>, <i>e</i><sub>1</sub>&gt; = 3/&radic;2 &nbsp;&nbsp;dan&nbsp;&nbsp; &lt;<i>x</i>, <i>e</i><sub>2</sub>&gt; = 5/&radic;6</p>
-              <p class="math">proj<sub><i>W</i></sub> <i>x</i> = <span class="frac"><span>3</span><span>2</span></span>(1, 1, 0) + <span class="frac"><span>5</span><span>6</span></span>(1, &minus;1, 2) = (7/3, 2/3, 5/3)</p>
-            </div>
-          </article>
-        </div>
-
-        <p class="note frag">
-          Periksa: <span class="ip"><i>x</i> &minus; proj<sub><i>W</i></sub><i>x</i> = (&minus;4/3, 4/3, 4/3)</span>
-          tegak lurus terhadap <span class="ip"><i>a</i></span> maupun <span class="ip"><i>b</i></span>.
-        </p>
+        <header class="s-head"><p class="kicker">Bab VI · Ruang Hasil Kali Dalam</p><h2>Contoh 8 dan 9: Proyeksi</h2></header>
+        <p>Diagram interaktif disajikan dengan JavaScript.</p>
       </div>
     </section>
 
     <!-- 23. Latihan -->
-    <section class="slide" data-title="Latihan Bab VI">
+    <section data-chapter="Bab VI / 23" class="slide" data-title="Latihan Bab VI">
       <div class="slide__inner">
         <header class="s-head">
           <p class="kicker">Latihan Bab VI</p>
-          <h2>Tujuh soal untuk dikerjakan</h2>
-          <p class="s-sub">Kerjakan dengan aksioma, bukan dengan perasaan. Tunjukkan langkahnya.</p>
+          <h2>Latihan Bab VI</h2>
+          <p class="s-sub">Kerjakan berdasarkan definisi dan aksioma. Tunjukkan langkah penyelesaiannya.</p>
         </header>
 
         <ol class="exercises">
           <li class="frag">Periksa apakah operasi berikut merupakan hasil kali dalam.
-            <span class="ex-sub">a. &lt;<i>u</i>, <i>v</i>&gt; = <i>u</i><sub>1</sub><sup>2</sup><i>v</i><sub>1</sub> + <i>u</i><sub>2</sub><sup>2</sup><i>v</i><sub>2</sub> di <i>R</i><sup>2</sup></span>
+            <span class="ex-sub">a. &lt;<i>u</i>, <i>v</i>&gt; = <i>u</i><sub>1</sub><sup>2</sup><i>v</i><sub>1</sub> + <i>u</i><sub>2</sub><i>v</i><sub>2</sub><sup>2</sup> di <i>R</i><sup>2</sup></span>
             <span class="ex-sub">b. &lt;<i>u</i>, <i>v</i>&gt; = <i>u</i><sub>1</sub><i>v</i><sub>1</sub> + 2<i>u</i><sub>2</sub><i>v</i><sub>2</sub> &minus; <i>u</i><sub>3</sub><i>v</i><sub>3</sub> di <i>R</i><sup>3</sup></span>
             <span class="ex-sub">c. &lt;<i>u</i>, <i>v</i>&gt; = <i>u</i><sub>1</sub><i>v</i><sub>3</sub> + <i>u</i><sub>2</sub><i>v</i><sub>2</sub> + <i>u</i><sub>3</sub><i>v</i><sub>1</sub> di <i>R</i><sup>3</sup></span>
           </li>
           <li class="frag">Tentukan nilai <i>k</i> sehingga vektor <span class="ip">(<i>k</i>, <i>k</i>, 1)</span> dan <span class="ip">(<i>k</i>, 5, 6)</span> saling ortogonal pada ruang Euclides.</li>
-          <li class="frag"><i>W</i> subruang RHD Euclides di <i>R</i><sup>3</sup> yang dibangun oleh <span class="ip">(1, 1, 0)</span> dan <span class="ip">(0, 1, 1)</span>. Tentukan proyeksi ortogonal vektor <span class="ip">(2, 3, 1)</span> pada <i>W</i>.</li>
+          <li class="frag"><i>W</i> subruang RHD Euclides di <i>R</i><sup>3</sup> yang dibangun oleh <span class="ip">(1, 1, 0)</span> dan <span class="ip">(1, 0, &minus;1)</span>. Tentukan proyeksi ortogonal vektor <span class="ip">(&minus;1, 1, 2)</span> pada <i>W</i>.</li>
           <li class="frag">Misalkan <span class="ip"><i>u</i> = (<i>u</i><sub>1</sub>, <i>u</i><sub>2</sub>)</span>, <span class="ip"><i>v</i> = (<i>v</i><sub>1</sub>, <i>v</i><sub>2</sub>) &isin; <i>R</i><sup>2</sup></span> dan
-            <span class="ip"><i>A</i> =</span> <span class="mat"><span>2</span><span>1</span><span>1</span><span>1</span></span>.
-            Tunjukkan bahwa <span class="ip">&lt;<i>u</i>, <i>v</i>&gt; = <i>v</i><sup>t</sup><i>A</i><i>u</i></span> merupakan hasil kali dalam di <i>R</i><sup>2</sup>.
+            <span class="ip"><i>A</i> =</span> <span class="mat"><span>1</span><span>1</span><span>0</span><span>1</span></span>.
+            Tunjukkan bahwa <span class="ip">&lt;<i>u</i>, <i>v</i>&gt; = (<i>A</i><i>u</i>) &middot; (<i>A</i><i>v</i>)</span> merupakan hasil kali dalam di <i>R</i><sup>2</sup>.
           </li>
-          <li class="frag">Ortonormalkan basis <span class="ip">{(1, 1), (1, 0)}</span> pada <i>R</i><sup>2</sup> dengan proses Gram-Schmidt.</li>
+          <li class="frag">Ortonormalkan basis <span class="ip">{(1, 0), (0, 1)}</span> pada <i>R</i><sup>2</sup> dengan proses Gram-Schmidt.</li>
           <li class="frag">Misalkan <i>A</i>, <i>B</i> &isin; <i>M</i><sub>2&times;2</sub>. Tunjukkan bahwa <span class="ip">&lt;<i>A</i>, <i>B</i>&gt; = tr(<i>B</i><sup>t</sup><i>A</i>)</span> merupakan hasil kali dalam di <i>M</i><sub>2&times;2</sub>.</li>
           <li class="frag">Dengan hasil kali dalam pada soal 6, ortonormalkan basis
             <span class="ip">{</span><span class="mat"><span>1</span><span>0</span><span>0</span><span>0</span></span><span class="ip">,</span>
@@ -769,15 +433,15 @@
     </section>
 
     <!-- 24. Rangkuman -->
-    <section class="slide slide--end" data-title="Rangkuman">
+    <section data-chapter="Bab VI / 24" class="slide slide--end" data-title="Rangkuman">
       <div class="slide__inner">
         <p class="kicker">Penutup</p>
-        <h2>Tiga hal yang dibawa pulang</h2>
+        <h2>Kesimpulan</h2>
 
         <ol class="takeaways">
-          <li class="frag"><strong>Hasil kali dalam adalah alat ukur.</strong> Empat aksioma memastikan panjang, sudut, dan jarak berperilaku wajar di ruang mana pun, bukan hanya di <i>R</i><sup>n</sup>.</li>
-          <li class="frag"><strong>Ortonormal menyederhanakan segalanya.</strong> Koefisien kombinasi linear berubah dari sistem persamaan menjadi satu hasil kali dalam biasa.</li>
-          <li class="frag"><strong>Gram-Schmidt selalu bisa dipakai.</strong> Basis sembarang diubah menjadi basis ortonormal tanpa mengubah ruang yang direntang.</li>
+          <li class="frag"><strong>Ruang hasil kali dalam.</strong> Ruang vektor yang dilengkapi operasi hasil kali dalam yang memenuhi sifat simetris, aditivitas, homogenitas, dan positivitas.</li>
+          <li class="frag"><strong>Himpunan ortonormal.</strong> Setiap pasangan vektor yang berbeda saling ortogonal dan masing-masing vektor memiliki norm satu.</li>
+          <li class="frag"><strong>Proses Gram–Schmidt.</strong> Basis pada ruang hasil kali dalam dapat ditransformasikan menjadi basis ortonormal. Basis tersebut dapat digunakan untuk menghitung proyeksi ortogonal.</li>
         </ol>
 
         <div class="end__foot">
@@ -821,6 +485,13 @@
     <p style="padding:2rem;font-family:system-ui">Presentasi ini memerlukan JavaScript untuk berpindah slide. Aktifkan JavaScript lalu muat ulang halaman.</p>
   </noscript>
 
+  <script src="vector-math.js"></script>
+  <script src="concepts.js"></script>
+  <script src="narrative.js"></script>
+  <script src="axioms.js"></script>
+  <script src="scenes.js"></script>
+  <script src="applications.js"></script>
   <script src="deck.js"></script>
+  <script src="session.js"></script>
 </body>
 </html>

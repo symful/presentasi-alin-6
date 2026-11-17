@@ -15,12 +15,14 @@ let sentuhX = 0;
 let sentuhY = 0;
 
 function tampilkan(index) {
+  const changed = current !== index;
   current = Math.max(0, Math.min(index, slides.length - 1));
 
   slides.forEach((slide, i) => {
     const aktif = i === current;
     slide.classList.toggle("is-active", aktif);
     slide.setAttribute("aria-hidden", aktif ? "false" : "true");
+    slide.inert = !aktif;
   });
 
   fill.style.width = `${((current + 1) / slides.length) * 100}%`;
@@ -30,6 +32,9 @@ function tampilkan(index) {
   history.replaceState(null, "", `#${current + 1}`);
   tandaiDaftarIsi();
   slides[current].scrollTop = 0;
+  window.mathScenes?.sync(slides[current]);
+  if(changed){window.mathScenes?.reset(slides[current]);slides[current].querySelectorAll(".frag").forEach(e=>e.classList.remove("on"));}
+  if (new URLSearchParams(location.search).has("all")) tampilSemua(slides[current]);
 }
 
 function belumTampil(slide) {
@@ -38,9 +43,11 @@ function belumTampil(slide) {
 
 function tampilSemua(slide) {
   slide.querySelectorAll(".frag").forEach((el) => el.classList.add("on"));
+  window.mathScenes?.finish(slide);
 }
 
 function maju() {
+  if (window.mathScenes?.advance(slides[current])) return;
   const sisa = belumTampil(slides[current]);
   if (sisa.length) {
     sisa[0].classList.add("on");
@@ -50,6 +57,7 @@ function maju() {
 }
 
 function mundur() {
+  if (window.mathScenes?.retreat(slides[current])) return;
   const aktif = Array.from(slides[current].querySelectorAll(".frag.on"));
   if (aktif.length) {
     aktif[aktif.length - 1].classList.remove("on");
@@ -57,7 +65,6 @@ function mundur() {
   }
   if (current > 0) {
     tampilkan(current - 1);
-    tampilSemua(slides[current]);
   }
 }
 
@@ -113,12 +120,16 @@ slides.forEach((slide, i) => {
 });
 
 document.addEventListener("keydown", (event) => {
+  if (event.target.closest("input, textarea, select, [contenteditable]")) return;
   const k = event.key;
+  if (event.ctrlKey || event.metaKey || event.altKey) return;
+  if (event.target.closest("button") && [" ", "Enter"].includes(k)) return;
 
   if (k === "Escape") {
     if (!toc.hidden) tutupDaftarIsi();
     return;
   }
+  if (!toc.hidden && !["t", "T", "o", "O"].includes(k)) return;
   if (k === "t" || k === "T" || k === "o" || k === "O") {
     event.preventDefault();
     toc.hidden ? bukaDaftarIsi() : tutupDaftarIsi();
@@ -130,10 +141,10 @@ document.addEventListener("keydown", (event) => {
     return;
   }
 
-  if (["ArrowRight", "ArrowDown", "PageDown", " ", "Enter", "n"].includes(k)) {
+  if (["ArrowRight", "ArrowDown", "PageDown", " ", "Enter", "n", "d", "D"].includes(k)) {
     event.preventDefault();
     maju();
-  } else if (["ArrowLeft", "ArrowUp", "PageUp", "Backspace", "p"].includes(k)) {
+  } else if (["ArrowLeft", "ArrowUp", "PageUp", "Backspace", "p", "a", "A"].includes(k)) {
     event.preventDefault();
     mundur();
   } else if (k === "Home") {
@@ -161,11 +172,13 @@ toc.addEventListener("click", (event) => {
 });
 
 document.addEventListener("touchstart", (event) => {
+  if (event.target.closest(".lab, .toc, .hud")) { sentuhX = NaN; return; }
   sentuhX = event.changedTouches[0].clientX;
   sentuhY = event.changedTouches[0].clientY;
 }, { passive: true });
 
 document.addEventListener("touchend", (event) => {
+  if (!Number.isFinite(sentuhX)) return;
   const selisihX = event.changedTouches[0].clientX - sentuhX;
   const selisihY = event.changedTouches[0].clientY - sentuhY;
   if (Math.abs(selisihX) < 60 || Math.abs(selisihX) < Math.abs(selisihY)) return;
@@ -185,3 +198,5 @@ const awal = Number(location.hash.replace("#", ""));
 tampilkan(Number.isFinite(awal) && awal > 0 ? awal - 1 : 0);
 
 if (new URLSearchParams(location.search).has("all")) tampilSemua(slides[current]);
+
+window.deckAPI={get(){return {slide:current,scene:window.mathScenes?.get(slides[current]),revealed:slides[current].querySelectorAll('.frag.on').length};},set(v){if(current!==v.slide)tampilkan(v.slide);window.mathScenes?.set(slides[current],v.scene);slides[current].querySelectorAll('.frag').forEach((e,i)=>e.classList.toggle('on',i<v.revealed));}};

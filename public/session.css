@@ -1,0 +1,98 @@
+#session-panel {
+  position: fixed;
+  inset: 5vh auto auto 50%;
+  transform: translateX(-50%);
+  width: min(680px,90vw);
+  max-height: 88vh;
+  overflow: auto;
+  border: 1px solid #ccd5e5;
+  border-radius: 18px;
+  padding: 24px;
+  font: 16px/1.5 system-ui;
+  color: #17243b;
+  z-index: 10000;
+  background: white;
+  box-shadow: 0 20px 80px #0003;
+}
+#session-panel::backdrop {
+  background: #12203677;
+}
+#session-panel header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+#session-panel h2 {
+  font-size: 24px;
+}
+#session-panel button {
+  padding: 9px 13px;
+  border: 1px solid #b8c6df;
+  background: #f3f6ff;
+  border-radius: 8px;
+  cursor: pointer;
+}
+#session-panel input[readonly] {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 9px;
+  font-size: 12px;
+}
+#session-panel label {
+  display: block;
+  margin: 10px 0;
+}
+.settings-tools {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+#session-badge {
+  position: fixed;
+  right: 12px;
+  top: 8px;
+  z-index: 9000;
+  border: 1px solid #cad5e8;
+  background: #ffffffdd;
+  border-radius: 6px;
+  color: #526078;
+  font: 12px system-ui;
+  padding: 5px;
+  opacity: .5;
+}
+#session-badge:hover {
+  opacity: 1;
+}
+#session-badge[data-offline=true] {
+  background: #fff0e9;
+  color: #ac281b;
+  opacity: 1;
+}
+#whiteboard {
+  position: absolute;
+  inset: 0;
+  width: 1600px;
+  height: 900px;
+  z-index: 1000;
+  pointer-events: none;
+  touch-action: none;
+  overflow: hidden;
+}
+body:has(#session-panel[open]) #whiteboard {
+  pointer-events: none!important;
+}
+
+#role-picker { width: min(780px, 90vw); box-sizing: border-box; border: 1px solid #dce3f3; border-radius: 24px; padding: 44px; color: #17243b; font: 17px/1.6 system-ui; box-shadow: 0 24px 100px #13245026; }
+#role-picker::backdrop { background: #edf2ffed; backdrop-filter: blur(12px); }
+#role-picker h1 { font-size: 34px; line-height: 1.2; margin: 10px 0 18px; }
+.role-kicker { font-size: 12px; font-weight: 800; letter-spacing: .16em; color: #294dff; }
+.role-options { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 30px 0 20px; }
+.role-options button { text-align: left; padding: 24px; background: #f5f7ff; border: 2px solid #dae2fa; border-radius: 16px; color: #17243b; cursor: pointer; font: inherit; }
+.role-options button:hover, .role-options button:focus-visible { border-color: #294dff; background: #edf1ff; }
+.role-options strong { display: block; color: #294dff; font-size: 24px; margin-bottom: 12px; }
+.role-options span { font-size: 15px; }
+.role-note { font-size: 14px; color: #63718c; }
+#local-preview { background: none; border: none; color: #63718c; text-decoration: underline; cursor: pointer; padding: 8px 0; }
+@media(max-width:560px) { #role-picker { padding: 24px; } .role-options { grid-template-columns: 1fr; } }

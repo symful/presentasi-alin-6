@@ -55,15 +55,15 @@ Geser layar ke kiri atau ke kanan juga bisa dipakai di ponsel.
 
 ## Deploy ke Deno Deploy
 
-Presentasi ini situs statis murni (HTML, CSS, JS, gambar), jadi runtime-nya
-`static` dan `server.ts` hanya dipakai untuk pratinjau lokal. Semua pengaturan
-build dibaca dari `deno.json`, termasuk nama org dan aplikasi:
+Presentasi menggunakan runtime **dynamic** agar server dapat menyinkronkan
+WebSocket. `server.ts` dipakai lokal dan produksi. Hubungkan Deno KV ke aplikasi
+sebelum deploy; lihat [panduan](docs/deno-shared-session.md).
 
 ```json
 "deploy": {
   "org": "symful",
   "app": "present-alin",
-  "runtime": { "type": "static", "cwd": "./public" }
+  "runtime": { "type": "dynamic", "entrypoint": "./server.ts", "cwd": "." }
 }
 ```
 
@@ -80,5 +80,75 @@ deno deploy --prod
 
 ## Catatan
 
-Materi mengikuti urutan slide perkuliahan. Contoh 7 dan 8 memakai bilangan
-yang dihitung ulang supaya hasilnya rapi dan mudah diperiksa di papan tulis.
+Materi mengikuti urutan slide perkuliahan. Contoh 4–9 dan latihan diselaraskan
+dengan PDF dosen, termasuk bilangan asli pada Contoh 7 dan 8.
+
+## Pratinjau desain interaktif
+
+Seluruh 24 slide menggunakan tema terang. Tiga belas slide menyediakan diagram
+SVG bertahap untuk sudut, norm, ortogonalitas, Gram–Schmidt, dan proyeksi.
+Gunakan tombol tahap atau Putar animasi; diagram 3D dapat diputar dengan
+menyeret gambar atau penggeser Sudut. Animasi mengikuti preferensi reduced motion.
+
+Berkas tambahan: `public/scenes.js`, `public/scenes.css`, dan
+`public/vector-math.js`. Tidak ada CDN atau dependensi front-end tambahan.
+`public/index.html` juga dapat dibuka langsung tanpa server.
+
+Pemeriksaan numerik: `node --test tests/vector-math.test.mjs`.
+Pemeriksaan server: `deno lint` dan `deno check server.ts`.
+Lihat [catatan pemeriksaan](docs/visual-review.md).
+
+## Pengantar konsep
+
+Presentasi kini berisi 28 slide: 24 slide materi dan empat pengantar visual
+sebelum perhitungan (ruang vektor, makna hasil kali dalam, ortogonal/ortonormal,
+dan proyeksi). `public/concepts.js` menyajikan ilustrasi Euclides; definisi umum
+dan contoh PDF tetap dipertahankan. Proyeksi diperkenalkan sebelum Gram–Schmidt.
+Putar animasi pada pengantar memberi jeda 6,5 detik per tahap; tombol tahap
+memungkinkan penjelasan sesuai tempo pembicara.
+
+## Revisi cakupan ALIN-6 (versi terbaru)
+
+Presentasi sekarang berisi **25 slide**, hanya pembahasan ALIN-6. Pengantar
+ruang vektor serta pengulangan dot product/proyeksi garis dihapus. Pengantar
+RHD memakai geometri norm, contoh berbobot dosen, dan gambaran galat minimum;
+perhitungan disajikan terpisah. Identitas sampul: **D4 2B**.
+Navigasi: **A / ←** kembali, **D / →** lanjut, termasuk tahapan animasi.
+Lihat [audit seluruh bahan dosen](docs/source-scope.md). Catatan jumlah slide
+pada bagian revisi sebelumnya merupakan riwayat pengembangan.
+
+## Narasi dan warna vektor
+
+`public/narrative.js` merinci alur diketahui → pertanyaan → penyelesaian →
+makna jawaban untuk contoh interaktif. Pengantar RHD memperlihatkan dua vektor
+secara bertahap, proyeksi yang disorot, dan arti hasilnya. Aljabar dan koordinat
+di bawah diagram mengikuti warna vektornya. Ilustrasi aplikasi baru muncul
+pada akhir penjelasan; animasi aplikasi menghormati reduced motion.
+
+## Satu alamat, banyak host dan presenter (27 slide)
+
+Buka alamat situs yang sama, lalu pilih **Host** atau **Presenter**. Semua perangkat
+masuk ke satu sesi bersama; tidak ada kode ruang, tautan per peran, atau host utama.
+Host dan presenter memiliki kendali yang sama; label Host menandai perangkat yang membagikan layar. Aplikasi tidak menetapkan batas
+jumlah kedua peran; kapasitas nyata tetap mengikuti server dan paket hosting.
+
+Tekan **S** untuk status koneksi, jumlah perangkat, salin alamat, ganti peran, dan
+whiteboard. Warna, ketebalan, penghapus, Ctrl+Z/Ctrl+Y bekerja pada slide aktif.
+Undo/redo bersifat bersama. Kamera, animasi, tahap, dan coretan ikut tersinkron.
+Fullscreen dan panel pengaturan tetap lokal pada tiap perangkat.
+
+Setiap kali membuka halaman, pilihan peran ditampilkan kembali. Perangkat yang
+bergabung terlambat menerima posisi dan coretan terakhir. Saat koneksi terputus,
+kontrol dinonaktifkan sampai tersambung kembali. Pratinjau sendiri tersedia untuk
+memeriksa materi tanpa memengaruhi sesi. Siapa pun yang membuka alamat dan memilih
+Presenter dapat mengendalikan sesi; tidak ada autentikasi pengguna.
+
+Konfigurasi Deploy kini **dynamic**, entrypoint `server.ts`. Sebelum deploy, pemilik
+aplikasi harus membuat **Deno KV** dan menghubungkannya ke aplikasi `present-alin`.
+Lihat [petunjuk deployment](docs/deno-shared-session.md). Sesi menggunakan transaksi
+KV dan watch lintas instance; data tidak bergantung pada memori satu server atau
+komputer presenter. Lokal menggunakan `.runtime/shared-v2.sqlite`.
+
+Pengujian: `node --test tests/vector-math.test.mjs tests/axioms.test.mjs tests/session-protocol.test.mjs`.
+Tes protokol memerlukan server; `ALIN_URL` menentukan alamat, `ALIN_SECOND_URL`
+dapat menunjuk instance kedua dengan database KV yang sama.

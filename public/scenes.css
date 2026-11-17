@@ -1,0 +1,768 @@
+/* Diagram terukur, satu aksen kobalt, tetap tanpa aset jaringan. */
+.slide--lab .slide__inner {
+  justify-content: flex-start;
+  gap: 24px;
+}
+.slide--lab .s-head {
+  padding-bottom: 24px;
+}
+.slide--lab h2 {
+  font-size: 58px;
+}
+.lab {
+  display: grid;
+  grid-template-columns: 510px 1fr;
+  gap: 50px;
+  height: 600px;
+}
+.lab__story {
+  display: flex;
+  flex-direction: column;
+  padding-top: 12px;
+}
+.lab__intro {
+  font-size: 23px;
+  line-height: 1.5;
+  color: #4d5666;
+  min-height: 90px;
+}
+.lab__steps {
+  display: flex;
+  gap: 10px;
+  margin: 18px 0 28px;
+}
+.lab__step {
+  border: 0;
+  border-top: 3px solid #d9dfeb;
+  background: none;
+  flex: 1;
+  padding: 10px 0;
+  text-align: left;
+  font: 600 15px var(--sans);
+  color: #616b7d;
+  cursor: pointer;
+}
+.lab__step[aria-current="step"] {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+.lab__step.is-done {
+  border-color: #8ba3ff;
+}
+.lab__eyebrow {
+  font: 700 13px var(--sans);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.lab__heading {
+  font-size: 32px;
+  line-height: 1.2;
+  margin: 10px 0 14px;
+}
+.lab__explain {
+  font-size: 23px;
+  line-height: 1.5;
+  min-height: 105px;
+  color: #4d5666;
+}
+.lab__formula {
+  font: 32px/1.5 var(--serif);
+  color: #12234a;
+  padding: 20px 0;
+  border-top: 1px solid #dce3f0;
+  margin-top: 15px;
+  white-space: pre-line;
+}
+.lab__source {
+  font-size: 14px;
+  margin-top: auto;
+  padding-top: 14px;
+  color: #68748a;
+}
+.lab__view {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background: #f7f9ff;
+  border-radius: 22px;
+}
+.lab__plot {
+  width: 100%;
+  height: 465px;
+  touch-action: none;
+  user-select: none;
+}
+.lab--3d .lab__plot {
+  cursor: grab;
+}
+.lab--3d .lab__plot:active {
+  cursor: grabbing;
+}
+.lab__plot text {
+  font-family: var(--sans);
+  font-size: 17px;
+  fill: #26334d;
+  paint-order: stroke;
+  stroke: #f7f9ff;
+  stroke-width: 5px;
+  stroke-linejoin: round;
+}
+.lab__plot .vector-label {
+  font-weight: 700;
+  font-size: 21px;
+}
+.lab__plot .grid-line {
+  stroke: #e1e7f2;
+  stroke-width: 1;
+}
+.lab__plot .axis {
+  stroke: #9ba8bc;
+  stroke-width: 1.3;
+}
+.lab__legend {
+  display: flex;
+  gap: 20px;
+  padding: 0 26px;
+  font-size: 15px;
+  min-height: 28px;
+  color: #546078;
+}
+.lab__legend span:before {
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 3px;
+  margin-right: 7px;
+  background: #1f4bff;
+  vertical-align: middle;
+}
+.lab__legend span:nth-child(2):before {
+  background: #25334c;
+}
+.lab__legend span:nth-child(3):before {
+  background: repeating-linear-gradient(90deg,#6f7b91 0 4px,transparent 4px 7px);
+}
+.lab__controls {
+  margin-top: auto;
+  padding: 14px 22px 20px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  border-top: 1px solid #e2e8f3;
+}
+.lab__controls button {
+  font: 600 16px var(--sans);
+  padding: 11px 14px;
+  border-radius: 9px;
+  border: 1px solid #dce2f0;
+  background: white;
+  color: #25334c;
+  cursor: pointer;
+}
+.lab__controls .lab__play {
+  background: #1f4bff;
+  color: white;
+  border-color: #1f4bff;
+}
+.lab__controls button:disabled {
+  opacity: .4;
+  cursor: default;
+}
+.lab__camera {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #526078;
+}
+.lab__camera input {
+  width: 85px;
+  accent-color: #1f4bff;
+}
+.lab__camera button {
+  font-size: 13px;
+  padding: 9px;
+}
+.lab__counter {
+  margin-left: auto;
+  font-size: 14px;
+  color: #526078;
+  font-variant-numeric: tabular-nums;
+}
+.lab__controls button:focus-visible,
+.lab__step:focus-visible {
+  outline: 3px solid #1f4bff;
+  outline-offset: 3px;
+}
+.slide--cover .cover__title {
+  font-size: 116px;
+  position: relative;
+  z-index: 1;
+}
+.slide--cover .cover__lead {
+  max-width: 760px;
+}
+.cover-geometry {
+  position: absolute;
+  right: 50px;
+  top: 185px;
+  width: 530px;
+  height: 460px;
+  opacity: .9;
+}
+.cover-geometry .lab__plot {
+  height: 100%;
+}
+.cover-geometry svg text {
+  font-size: 18px;
+}
+.slide:before {
+  content: attr(data-chapter);
+  position: absolute;
+  right: 70px;
+  bottom: 28px;
+  font-size: 12px;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: #64728b;
+}
+@media print {
+  .lab__controls,
+  .lab__steps {
+    display: none;
+  }
+  .lab {
+    height: auto;
+  }
+  .lab__view {
+    break-inside: avoid;
+  }
+}
+
+/* Penyelarasan seluruh 24 slide: halaman akademik terang dengan hierarki formal. */
+.ambient__blob {
+  animation: none;
+  opacity: .18;
+}
+.ambient__grid {
+  opacity: .16;
+}
+.slide:not(.slide--cover):not(.slide--divider):not(.slide--end) > .slide__inner {
+  justify-content: flex-start;
+  padding-top: 8px;
+}
+.s-head {
+  gap: 14px;
+  padding-bottom: 24px;
+  margin-bottom: 8px;
+}
+.s-head h2 {
+  font-size: 56px;
+  line-height: 1.1;
+}
+.s-sub {
+  color: #5f6c82;
+}
+.slide:not(.slide--lab) .lead {
+  font-size: 25px;
+  line-height: 1.5;
+  max-width: 1280px;
+}
+.axioms {
+  gap: 16px;
+  margin-top: 14px;
+}
+.axiom {
+  background: #f6f8ff;
+  border: 0;
+  border-radius: 0;
+  border-left: 3px solid #1f4bff;
+}
+.axiom__no {
+  background: none;
+  color: #1f4bff;
+  border-radius: 0;
+  font-family: var(--serif);
+  font-size: 28px;
+}
+.axiom .math {
+  font-size: 27px;
+}
+.panel {
+  border: 0;
+  border-top: 3px solid #1f4bff;
+  background: #f5f8ff;
+  border-radius: 0;
+  padding: 28px;
+}
+.panel--bad {
+  border-color: #25334c;
+  background: #f1f3f8;
+}
+.panel--bad h3 {
+  color: #25334c;
+}
+.agenda {
+  grid-template-columns: 1fr 1fr;
+  gap: 20px 54px;
+  border: 0;
+  margin-top: 18px;
+}
+.agenda li {
+  grid-template-columns: 45px 1fr;
+  gap: 20px;
+  padding: 22px 0;
+}
+.agenda li:last-child {
+  grid-column: 1 / -1;
+}
+.agenda h3 {
+  font-size: 29px;
+}
+.agenda p {
+  font-size: 22px;
+}
+.team {
+  gap: 22px;
+}
+.team li {
+  background: #f6f8ff;
+  border: 0;
+  border-radius: 12px;
+  box-shadow: none;
+}
+.team__photo {
+  border-radius: 5px;
+}
+.team h3 {
+  font-size: 24px;
+}
+.team__nim {
+  color: #425374;
+}
+.slide--divider {
+  background: linear-gradient(110deg,white 55%,#f0f4ff);
+}
+.slide--divider h2 {
+  max-width: 1000px;
+  font-size: 100px;
+  line-height: 1.05;
+}
+.slide--divider .divider__num {
+  color: #e6edff;
+  -webkit-text-stroke: 0;
+  font-size: 410px;
+  right: 0;
+  bottom: 45px;
+  z-index: -1;
+}
+.slide--divider .lead {
+  color: #455674;
+}
+.exercises {
+  font-size: 19px;
+  gap: 14px 45px;
+  line-height: 1.4;
+}
+.exercises .ex-sub {
+  line-height: 1.4;
+}
+.takeaways {
+  gap: 35px;
+}
+.takeaways li {
+  font-size: 29px;
+  padding: 28px 0 28px 75px;
+  border-bottom: 1px solid #dce3ef;
+}
+.takeaways li strong {
+  color: #163eb9;
+}
+.hud__row {
+  background: #fff;
+}
+.frag {
+  filter: none;
+  transform: translateY(12px);
+  transition: opacity .35s ease,transform .4s ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  .frag:not(.on) {
+    opacity: 0;
+  }
+}
+
+/* Pengantar konsep: ruang baca lebih luas, formula tidak mendominasi. */
+.slide--concept h2 {
+  font-size: 52px;
+}
+.slide--concept .lab__formula {
+  font: 25px/1.5 var(--sans);
+}
+.slide--concept .lab__explain {
+  font-size: 24px;
+}
+.slide--concept .lab__intro {
+  font-size: 22px;
+  min-height: 74px;
+}
+.slide--concept .lab__heading {
+  font-size: 30px;
+}
+.slide--concept .lab__steps {
+  margin: 12px 0 20px;
+}
+.slide--concept .lab__legend {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.slide--concept .lab__intro {
+  font-size: 21px;
+  line-height: 1.4;
+  min-height: 105px;
+}
+.slide--concept .lab__explain {
+  font-size: 22px;
+  line-height: 1.4;
+}
+.slide--concept .lab__formula {
+  font-size: 23px;
+  line-height: 1.4;
+  padding: 14px 0;
+}
+.slide--concept .lab__heading {
+  font-size: 28px;
+}
+.slide--concept .lab__step {
+  font-size: 14px;
+}
+
+.lab__plot {
+  height: 365px;
+}
+.lab__algebra {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px 18px;
+  padding: 10px 26px;
+  font: 600 17px/1.3 var(--sans);
+  min-height: 46px;
+}
+.lab__application {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 9px 24px;
+  font-size: 16px;
+  line-height: 1.3;
+  background: #eef5f0;
+  border-top: 1px solid #d4e5d8;
+}
+.lab__application[hidden] {
+  display: none;
+}
+.application-motion {
+  width: 76px;
+  height: 40px;
+  flex: none;
+  position: relative;
+  border-bottom: 2px solid #15804a;
+  background: linear-gradient(135deg,transparent 47%,#b6c9bf 48% 51%,transparent 52%);
+}
+.application-motion:after {
+  content: '';
+  position: absolute;
+  left: 12px;
+  top: 5px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #15804a;
+  animation: application-projection 3s ease-in-out infinite alternate;
+}
+@keyframes application-projection {
+  to {
+    transform: translate(40px,24px);
+  }
+}
+.slide:not(.is-active) .application-motion:after {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion:reduce) {
+  .application-motion:after {
+    animation: none;
+  }
+}
+.lab__heading {
+  font-size: 29px;
+}
+.lab__explain {
+  font-size: 21px;
+  line-height: 1.4;
+  min-height: 85px;
+}
+.lab__formula {
+  font-size: 27px;
+  line-height: 1.4;
+  padding: 13px 0;
+}
+.lab__intro {
+  font-size: 21px;
+  line-height: 1.4;
+  min-height: 70px;
+}
+.lab__steps {
+  margin: 12px 0 18px;
+  gap: 6px;
+}
+.lab__legend {
+  font-size: 14px;
+}
+.lab__legend span:nth-child(2):before {
+  background: #c53243;
+}
+.lab__legend span:nth-child(3):before {
+  background: #15804a;
+}
+
+.application-motion {
+  width: 100px;
+  height: 60px;
+  background: none;
+  border: 0;
+}
+.application-motion:after {
+  display: none;
+}
+.application-motion svg {
+  width: 100%;
+  height: 100%;
+}
+.moving-light {
+  transform-origin: 60px 42px;
+  animation: light-sweep 3s ease-in-out infinite alternate;
+}
+.light-surface {
+  animation: light-tone 3s ease-in-out infinite alternate;
+}
+.moving-plane {
+  animation: plane-flight 3s ease-in-out infinite alternate;
+}
+.moving-basis {
+  transform-origin: 30px 52px;
+  animation: basis-turn 3s ease-in-out infinite alternate;
+}
+.moving-projection {
+  stroke-dasharray: 44;
+  animation: project-draw 3s ease-in-out infinite;
+}
+@keyframes light-sweep {
+  to {
+    transform: rotate(70deg);
+  }
+}
+@keyframes light-tone {
+  to {
+    fill: #d1e8cb;
+  }
+}
+@keyframes plane-flight {
+  to {
+    transform: translate(9px,-8px);
+  }
+}
+@keyframes basis-turn {
+  to {
+    transform: rotate(20deg);
+  }
+}
+@keyframes project-draw {
+  0% {
+    stroke-dashoffset: 44;
+  }
+  70%,
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+.slide:not(.is-active) .application-motion * {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion:reduce) {
+  .application-motion * {
+    animation: none!important;
+  }
+}
+/* Informasi teknis dipindahkan ke dokumentasi, bukan layar audiens. */
+.lab__source,
+.lab__legend,
+.lab__application,
+.lab__eyebrow {
+  display: none!important;
+}
+.lab__plot {
+  height: 440px;
+}
+.lab__intro {
+  min-height: 0;
+  font-size: 21px;
+  line-height: 1.4;
+  margin-bottom: 10px;
+}
+.lab__story {
+  padding-top: 0;
+}
+.slide--concept .lab__intro {
+  min-height: 0;
+}
+.lab__steps {
+  margin: 10px 0 20px;
+}
+.lab__algebra {
+  font-size: 18px;
+  line-height: 1.4;
+  padding-top: 6px;
+}
+.lab__heading {
+  font-size: 30px;
+}
+.lab__formula {
+  font-size: 28px;
+}
+.slide[data-scene="5"] .lab,
+.slide[data-scene="9"] .lab,
+.slide[data-scene="10"] .lab {
+  grid-template-columns: 1.3fr 1fr;
+  gap: 40px;
+}
+.slide[data-scene="5"] .lab__story,
+.slide[data-scene="9"] .lab__story,
+.slide[data-scene="10"] .lab__story {
+  grid-column: 2;
+  grid-row: 1;
+}
+.slide[data-scene="5"] .lab__view,
+.slide[data-scene="9"] .lab__view,
+.slide[data-scene="10"] .lab__view {
+  grid-column: 1;
+  grid-row: 1;
+  background: #f6f8fb;
+  border-left: 5px solid #c53243;
+}
+.slide[data-scene="concept-orthogonal"] .lab {
+  grid-template-columns: 440px 1fr;
+}
+.slide[data-scene="concept-orthogonal"] .lab__view {
+  background: white;
+  border: 2px solid #dde5f3;
+}
+.slide[data-scene="6"] .lab {
+  grid-template-columns: 440px 1fr;
+}
+.slide[data-scene="8"] .lab__view {
+  background: linear-gradient(135deg,#fff,#edf3ff);
+  border: 1px solid #d5dfef;
+}
+.slide--applications .slide__inner {
+  justify-content: center;
+  gap: 42px;
+}
+.slide--applications h2 {
+  font-size: 52px;
+  max-width: 1400px;
+}
+.application-cards {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 30px;
+}
+.application-card {
+  margin: 0;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid #e1e7f0;
+  background: #fff;
+}
+.application-image {
+  height: 350px;
+  position: relative;
+  overflow: hidden;
+  background: #f3f6fb;
+}
+.application-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.application-card figcaption {
+  padding: 24px;
+  font-size: 24px;
+  line-height: 1.4;
+  color: #25334c;
+}
+.slide.is-active .app-flight img {
+  animation: application-flight 6s ease-in-out infinite alternate;
+}
+.slide.is-active .app-render img {
+  animation: application-light 5s ease-in-out infinite alternate;
+}
+.slide.is-active .app-robot img {
+  animation: application-robot 6s ease-in-out infinite alternate;
+}
+.application-overlay {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: #1f4bff;
+  border: 3px solid white;
+  border-radius: 50%;
+  left: 25%;
+  top: 70%;
+  opacity: 0;
+  box-shadow: 0 0 20px #1f4bff;
+}
+.slide.is-active .app-robot .application-overlay {
+  animation: application-route 5s linear infinite;
+}
+@keyframes application-flight {
+  to {
+    transform: scale(1.06) rotate(-1deg);
+  }
+}
+@keyframes application-light {
+  to {
+    filter: brightness(1.13) saturate(1.15);
+  }
+}
+@keyframes application-robot {
+  to {
+    transform: scale(1.04);
+  }
+}
+@keyframes application-route {
+  0% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+    left: 80%;
+    top: 20%;
+  }
+  100% {
+    opacity: 0;
+    left: 80%;
+    top: 20%;
+  }
+}
+@media (prefers-reduced-motion:reduce) {
+  .application-card * {
+    animation: none!important;
+  }
+}
+
+.slide:not(.is-active){visibility:hidden;transition:none}
+.slide.is-active{transition:opacity .16s ease,transform .16s ease}
