@@ -1,5 +1,8 @@
-const path = Deno.env.get("ALIN_KV_PATH");
-if (!path) throw new Error("ALIN_KV_PATH is required");
+import { dirname } from "@std/path";
+
+const path = Deno.args[0] || Deno.env.get("ALIN_KV_PATH");
+if (!path) throw new Error("ALIN_KV_PATH is required, or pass the KV path as the first argument");
+await Deno.mkdir(dirname(path), { recursive: true });
 const guides: Record<string, string> = JSON.parse(
   await Deno.readTextFile(new URL("./presenter-guides.json", import.meta.url)),
 );

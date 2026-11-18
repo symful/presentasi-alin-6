@@ -1,7 +1,8 @@
 {
   "tasks": {
     "start": "deno run --allow-net --allow-read --allow-env --allow-write=.runtime server.ts",
-    "dev": "deno run --allow-net --allow-read --allow-env --allow-write=.runtime --watch server.ts"
+    "dev": "deno run --allow-net --allow-read --allow-env --allow-write=.runtime --watch server.ts",
+    "seed-guides": "deno run --allow-read --allow-env=ALIN_KV_PATH --allow-write deploy/add-presenter-guides.ts .runtime/shared-v2.sqlite"
   },
   "deploy": {
     "runtime": {
