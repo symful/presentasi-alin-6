@@ -28,7 +28,7 @@ public/{vector-math,scenes,concepts,narrative,axioms,applications}.js
 public/assets/anggota/     foto anggota, format 3:4 (720 x 960)
 public/assets/applications/  gambar dan demo aplikasi norm
 docs/                      PDF sumber, transkrip video, catatan desain dan deploy
-deploy/                    konfigurasi VPS dan skrip pengisian catatan presenter
+deploy/                    konfigurasi VPS, naskah, dan skrip catatan presenter
 tests/                     pengujian Node (.mjs)
 ```
 
@@ -61,6 +61,15 @@ deno task seed-guides
 ```
 
 Skrip menerima path database sebagai argumen pertama atau lewat `ALIN_KV_PATH`.
+
+Naskah presentasi dari `deploy/presenter-scripts.json` dapat menggantikan catatan
+standar lewat `deploy/update-presenter-scripts.ts`. Skrip ini memerlukan
+`ALIN_KV_PATH` yang menunjuk ke database yang dipakai; catatan tambahan yang sudah
+ada dipindahkan ke sticky note.
+
+```sh
+deno run --allow-read --allow-env=ALIN_KV_PATH --allow-write=.runtime deploy/update-presenter-scripts.ts
+```
 
 ## Navigasi
 
