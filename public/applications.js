@@ -35,13 +35,6 @@
       media.append(img);
       const caption = document.createElement("figcaption");
       caption.textContent = description;
-      const credit = document.createElement("a");
-      credit.className = "application-credit";
-      const godot = ["vision", "speed"].includes(name);
-      credit.textContent = godot ? "Sumber: dokumentasi Godot" : "Sumber: Blender Manual";
-      credit.href = godot ? "https://docs.godotengine.org/en/stable/tutorials/math/vector_math.html" : "https://docs.blender.org/manual/en/latest/render/shader_nodes/utilities/vector/vector_math.html";
-      credit.target = "_blank"; credit.rel = "noopener";
-      caption.append(credit);
       card.append(media, caption);
       grid.append(card);
     });

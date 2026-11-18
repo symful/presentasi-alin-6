@@ -201,7 +201,7 @@
     scaledResult.formulaParts = ["3⟨", R("u"), ",", B("v"), "⟩ = 3[", R("1"), "×", B("1"), " + ", R("1"), "×", B("0"), "]\n= 3×1 = 3\n⟨3", R("u"), ",", B("v"), "⟩ = 3⟨", R("u"), ",", B("v"), "⟩ = 3"];
     ax.splice(5, 0, scaledResult);
     const failed = S("4. Contoh operasi yang gagal positivitas", "Misalkan u=(a,b,c) dan v=(d,e,f), diberikan operasi ⟨u,v⟩=ad+cf. Ambil u=(0,2,0). Vektor ini bukan nol, tetapi hasil kali dengan dirinya sendiri adalah nol.", "⟨u,v⟩ = ad + cf\n⟨u,u⟩ = a² + c²\n= 0² + 0² = 0, padahal u ≠ 0", [V("u", [0,2,0])], { measure: 0 });
-    failed.formulaParts = ["⟨", R("u"), ",", B("v"), "⟩ = ", R("a"), B("d"), " + ", R("c"), B("f"), "\n", R("u = (0,2,0)"), " ≠ 0\n⟨", R("u,u"), "⟩ = ", R("0"), "² + ", R("0"), "² = 0\nAksioma positivitas tidak terpenuhi."];
+    failed.formulaParts = ["⟨", R("u"), ",", B("v"), "⟩ = ", R("a"), B("d"), " + ", R("c"), B("f"), "\n⟨", R("u,u"), "⟩ = ", R("a"), "² + ", R("c"), "² ≥ 0\n", R("u = (0,2,0)"), " ≠ 0\n⟨", R("u,u"), "⟩ = ", R("0"), "² + ", R("0"), "² = 0\nAksioma positivitas tidak terpenuhi."];
     failed.vectors[0].coordinatesText = "0, 2, 0";
     ax.push(failed);
     const symbolic = (id, to, coords) => ({ ...V(id, to), coordinatesText: coords });
@@ -253,9 +253,6 @@
     }
     c[5].intro = "Untuk setiap u, v, w ∈ V dan setiap skalar k ∈ R, hasil kali dalam memenuhi empat aksioma berikut.";
     c[8].steps.unshift(S("Asumsi ruang vektor", "Pada contoh ini, W dipahami sebagai ruang vektor bagian dari R³. Yang kita periksa adalah apakah operasi yang diberikan memenuhi aksioma hasil kali dalam.", "W merupakan ruang vektor bagian dari R³", []));
-    failed.formulaParts = ["⟨", R("u"), ",", B("v"), "⟩ = ", R("a"), B("d"), " + 0", R("b"), B("e"), " + ", R("c"), B("f"), "\n", R("u = (0,2,0)"), " ≠ 0\n⟨", R("u,u"), "⟩ = ", R("0"), "² + 0×", R("2"), "² + ", R("0"), "² = 0\nAksioma positivitas tidak terpenuhi."];
-    c[10].steps[0].formula = "⟨u,v⟩ = ad + 0be + cf\n⟨u,u⟩ = a² + 0b² + c²";
-    c[10].steps[2].formula = "⟨u,u⟩ = 0² + 0×2² + 0² = 0";
     c[10].title = "Contoh Soal 4: Vektor Tak Nol, Hasilnya Nol";
     c[10].steps[0].vectors = [symbolic("u", [1,2,1], "a, b, c")];
     c[13].title = "Contoh Soal 5: Ortogonal dan Ortonormal";
