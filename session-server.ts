@@ -7,7 +7,9 @@ export type View = {
 type Stroke = { id: string; color: string; width: number; points: number[][]; slide: number };
 type Shared = { view: View; ink: Stroke[]; redo: Stroke[]; revision: number; sender?: string };
 const deployed = Boolean(Deno.env.get("DENO_DEPLOY") || Deno.env.get("DENO_DEPLOYMENT_ID"));
-if (!deployed) await Deno.mkdir(".runtime", { recursive: true });
+if (!deployed && !Deno.env.get("ALIN_KV_PATH")) {
+  await Deno.mkdir(".runtime", { recursive: true });
+}
 const kv = await Deno.openKv(
   Deno.env.get("ALIN_KV_PATH") || (deployed ? undefined : ".runtime/shared-v2.sqlite"),
 );
@@ -48,7 +50,7 @@ async function change(m: Record<string, unknown>) {
   }
   throw Error("Kontrol sedang sibuk; coba kembali.");
 }
-let presence = { hosts: 0, presenters: 0 };
+let presence = { hosts: 0, presenters: 0, guests: 0 };
 async function broadcast(updated?: Shared) {
   if (!clients.size) return;
   const data = updated || (await load()).data;
@@ -57,16 +59,17 @@ async function broadcast(updated?: Shared) {
     for (const s of clients.keys()) if (s.readyState === 1) s.send(message);
     return;
   }
-  let hosts = 0, presenters = 0;
+  let hosts = 0, presenters = 0, guests = 0;
   for await (
     const entry of kv.list<{ role: string; time: number }>({ prefix: ["alin-live-v3", "presence"] })
   ) {
     if (Date.now() - entry.value.time > 45000) continue;
     if (entry.value.role === "host") hosts++;
-    else presenters++;
+    else if (entry.value.role === "presenter") presenters++;
+    else guests++;
   }
-  presence = { hosts, presenters };
-  const message = JSON.stringify({ type: "state", ...data, hosts, presenters });
+  presence = { hosts, presenters, guests };
+  const message = JSON.stringify({ type: "state", ...data, hosts, presenters, guests });
   for (const s of clients.keys()) if (s.readyState === 1) s.send(message);
 }
 const notesRoot = ["alin-notes-v1", "revision"];
@@ -192,7 +195,7 @@ function mutate(r: Shared, m: Record<string, unknown>) {
 
   return true;
 }
-export function sessionRoute(request: Request): Response | undefined {
+export async function sessionRoute(request: Request): Promise<Response | undefined> {
   const url = new URL(request.url);
   if (url.pathname === "/api/health") {
     return json({ ok: true, service: "alin-session", version: 2, session: "shared" });
@@ -206,13 +209,50 @@ export function sessionRoute(request: Request): Response | undefined {
     return json({ error: "Gunakan satu alamat presentasi dan pilih peran." }, 404);
   }
   const role = url.searchParams.get("role");
-  if (role !== "host" && role !== "presenter") {
-    return json({ error: "Pilih Host atau Presenter." }, 400);
+  if (role !== "host" && role !== "presenter" && role !== "guest") {
+    return json({ error: "Pilih Host, Presenter, atau Guest." }, 400);
+  }
+  if (request.method === "POST") {
+    if (role === "guest") return json({ role, session: "shared" });
+    let body;
+    try {
+      body = JSON.parse(await request.text());
+    } catch {
+      return json({ error: "Permintaan tidak sah." }, 400);
+    }
+    if (typeof body.password !== "string" || body.password.length > 256) {
+      return json({ error: "Password salah." }, 401);
+    }
+    const digest = new Uint8Array(
+      await crypto.subtle.digest("SHA-256", new TextEncoder().encode(body.password)),
+    );
+    const actual = Array.from(digest, (x) => x.toString(16).padStart(2, "0")).join("");
+    if (actual !== "58c5ec3d355e2fd83eb3586aca6ddc7c7afc8de7eb10e0298741986b2aac0a6a") {
+      return json({ error: "Password salah." }, 401);
+    }
+    const token = crypto.randomUUID();
+    await kv.set(["alin-auth-v1", token], { role }, { expireIn: 12 * 60 * 60 * 1000 });
+    return json({ role, token });
   }
   if (request.headers.get("upgrade")?.toLowerCase() !== "websocket") {
     return json({ role, session: "shared" });
   }
-  const { socket, response } = Deno.upgradeWebSocket(request);
+  if (role !== "guest") {
+    const protocols = request.headers.get("sec-websocket-protocol")?.split(",").map((x) =>
+      x.trim()
+    ) || [];
+    const token = protocols.find((x) => x.startsWith("token."))?.slice(6);
+    if (
+      !token || token.length > 80 ||
+      (await kv.get<{ role: string }>(["alin-auth-v1", token])).value?.role !== role
+    ) {
+      return json({ error: "Password diperlukan." }, 401);
+    }
+  }
+  const { socket, response } = Deno.upgradeWebSocket(
+    request,
+    role === "guest" ? {} : { protocol: "alin-session" },
+  );
   const id = crypto.randomUUID();
   const heartbeat = () => kv.set(presenceKey(id), { role, time: Date.now() }, { expireIn: 60000 });
   socket.onopen = async () => {
@@ -244,6 +284,7 @@ export function sessionRoute(request: Request): Response | undefined {
         if (socket.readyState === 1) socket.send('{"type":"pong"}');
         return;
       }
+      if (role === "guest") return;
       if (m.type === "note") {
         if (role !== "presenter") return;
         if (

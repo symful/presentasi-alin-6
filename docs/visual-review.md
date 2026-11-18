@@ -167,3 +167,13 @@ states pass without script errors or detected vertical overflow, lint/typecheck
 pass. These timings are local, not a Deno production or internet benchmark.
 Network transit, cross-region KV latency, and clock skew can still affect timing.
 No asset resolution, geometry, easing, or animation duration was reduced.
+
+### Guest and password-protected control roles
+
+Browser check with presenter, host, and guest: guest moves independently, host
+stays on its own slide, guest sees ink only on its current slide, notes cannot be
+opened, editing tools disabled. Server tests reject wrong password, anonymous
+control-role sockets, role-mismatched tokens, guest mutations, and notes access.
+Authenticated presenter writes still reach guests. All 12 tests, lint, and type
+check pass. Integration test assertions now isolate ink by slide, preserving
+pre-existing drawings elsewhere in the test database.

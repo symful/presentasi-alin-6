@@ -97,11 +97,14 @@ body:has(#session-panel[open]) #whiteboard {
 #local-preview { background: none; border: none; color: #63718c; text-decoration: underline; cursor: pointer; padding: 8px 0; }
 @media(max-width:560px) { #role-picker { padding: 24px; } .role-options { grid-template-columns: 1fr; } }
 
-#presenter-notes { position: fixed; z-index: 9500; top: 50px; right: 20px; width: min(370px, 90vw); padding: 18px; box-sizing: border-box; background: #fff5bd; color: #4a3a17; border: 1px solid #ead996; border-radius: 8px; box-shadow: 0 12px 40px #17243b33; font: 15px/1.5 system-ui; max-height: 100dvh; overflow-y: auto; }
-#presenter-notes header { display: flex; align-items: center; justify-content: space-between; cursor: grab; touch-action: none; user-select: none; }
-#presenter-notes header.dragging { cursor: grabbing; }
-#presenter-notes button { border: 0; background: transparent; font-size: 26px; cursor: pointer; color: inherit; }
-#presenter-notes h3 { font-size: 16px; margin: 10px 0; }
-#presenter-notes textarea { display: block; width: 100%; min-height: 210px; max-height: 55vh; resize: vertical; box-sizing: border-box; padding: 10px; background: #fffbdf; color: #33280f; border: 1px solid #d8c888; border-radius: 4px; font: 16px/1.6 system-ui; }
-#presenter-notes p { font-size: 12px; margin-bottom: 0; }
-@media print { #presenter-notes { display: none !important; } }
+#presenter-notes { position: fixed; inset: 0; z-index: 9500; pointer-events: none; }
+.presenter-sticky { pointer-events: auto; position: absolute; box-sizing: border-box; padding: 14px 16px 22px; background: #fff5bd; color: #4a3a17; border: 1px solid #ead996; border-radius: 8px; box-shadow: 0 12px 40px #17243b33; font: 15px/1.5 system-ui; display: flex; flex-direction: column; overflow: hidden; }
+.presenter-sticky:focus-within { z-index: 2; }
+.presenter-sticky header { display:flex; align-items:center; gap:12px; cursor:grab; touch-action:none; user-select:none; flex-shrink:0; }
+.presenter-sticky header strong { margin-right:auto; }
+.presenter-sticky button { border:0; background:transparent; font-size:24px; cursor:pointer; color:inherit; }
+.presenter-sticky h3 { font-size:15px; margin:8px 0; flex-shrink:0; }
+.presenter-sticky textarea { width:100%; min-height:0; flex:1; resize:none; box-sizing:border-box; padding:10px; background:#fffbdf; color:#33280f; border:1px solid #d8c888; border-radius:4px; font:16px/1.6 system-ui; }
+.presenter-sticky p { font-size:12px; margin:6px 0 0; flex-shrink:0; }
+.presenter-sticky .note-resize { position:absolute; right:0; bottom:0; width:24px; height:24px; padding:0; font-size:20px; line-height:24px; cursor:nwse-resize; touch-action:none; }
+@media print { #presenter-notes { display:none !important; } }

@@ -1,10 +1,11 @@
+import { protocols } from "./auth-helper.mjs";
 import test from "node:test";
 import assert from "node:assert/strict";
 const base = process.env.ALIN_URL || "http://localhost:8017";
 const wait = async (fn) => { const end=Date.now()+7000; while(!fn()) { if(Date.now()>end) throw Error("notes timeout"); await new Promise(r=>setTimeout(r,25)); } };
 test("shared notes persist across reconnect and are never delivered to hosts", async()=>{
  const peers=[];
- const connect=async(role)=>{const u=new URL('/api/session?role='+role,base);u.protocol=u.protocol==='https:'?'wss:':'ws:';const ws=new WebSocket(u),p={ws,messages:[]};peers.push(p);ws.onmessage=e=>p.messages.push(JSON.parse(e.data));await new Promise((res,rej)=>{ws.onopen=res;ws.onerror=rej});return p};
+ const connect=async(role)=>{const u=new URL('/api/session?role='+role,base);u.protocol=u.protocol==='https:'?'wss:':'ws:';const ws=new WebSocket(u, await protocols(base, role)),p={ws,messages:[]};peers.push(p);ws.onmessage=e=>p.messages.push(JSON.parse(e.data));await new Promise((res,rej)=>{ws.onopen=res;ws.onerror=rej});return p};
  const key='test-notes-'+crypto.randomUUID(),secret='Catatan bersama '+crypto.randomUUID();
  try {
  const p=await connect('presenter'),q=await connect('presenter'),h=await connect('host');

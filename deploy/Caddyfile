@@ -1,0 +1,14 @@
+mater.kataakhtarnamatimnyaapayah.my.id {
+ encode zstd gzip
+ header X-Content-Type-Options nosniff
+ header Referrer-Policy same-origin
+ @api path /api/*
+ handle @api {
+  reverse_proxy 127.0.0.1:8000
+ }
+ handle {
+  root * /opt/mater/current/public
+  header Cache-Control "public, max-age=0, must-revalidate"
+  file_server
+ }
+}

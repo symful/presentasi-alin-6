@@ -1,3 +1,4 @@
+import { protocols } from "./auth-helper.mjs";
 import test from "node:test";
 import assert from "node:assert/strict";
 const base = process.env.ALIN_URL || "http://localhost:8016";
@@ -8,7 +9,7 @@ test("one shared session: multiple hosts, presenters and undo/redo", async () =>
     const url = new URL("/api/session", origin);
     url.protocol = url.protocol === "https:" ? "wss:" : "ws:";
     url.searchParams.set("role", role);
-    const ws = new WebSocket(url);
+    const ws = new WebSocket(url, await protocols(base, role));
     const peer = { ws, state: null };
     peers.push(peer);
     ws.addEventListener("message", (e) => {
@@ -40,7 +41,7 @@ test("one shared session: multiple hosts, presenters and undo/redo", async () =>
     h.ws.send(JSON.stringify({ type: "view", view: { slide: 3, revealed: 0 } }));
     await wait(() => h.state.view.slide === 3);
     p.ws.send('{"type":"clear"}');
-    await wait(() => h.state.ink.length === 0);
+    await wait(() => h.state.ink.filter(s => s.slide === 3).length === 0);
     p.ws.send(
       JSON.stringify({
         type: "stroke",
@@ -53,11 +54,11 @@ test("one shared session: multiple hosts, presenters and undo/redo", async () =>
         },
       }),
     );
-    await wait(() => h.state.ink.length === 1 && h2.state.ink.length === 1);
+    await wait(() => h.state.ink.filter(s => s.slide === 3).length === 1 && h2.state.ink.filter(s => s.slide === 3).length === 1);
     q.ws.send('{"type":"undo"}');
-    await wait(() => h.state.ink.length === 0);
+    await wait(() => h.state.ink.filter(s => s.slide === 3).length === 0);
     p.ws.send('{"type":"redo"}');
-    await wait(() => h.state.ink.length === 1 && h2.state.ink.length === 1);
+    await wait(() => h.state.ink.filter(s => s.slide === 3).length === 1 && h2.state.ink.filter(s => s.slide === 3).length === 1);
   } finally {
     peers.forEach((p) => p.ws.close());
   }

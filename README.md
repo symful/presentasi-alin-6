@@ -177,3 +177,15 @@ Tes: `ALIN_URL=http://localhost:8017 node --test tests/shared-notes.test.mjs`
 uji dengan ALIN_KV_PATH berbeda agar catatan pengujian tidak masuk sesi produksi.
 
 Notes dapat diseret melalui bagian judulnya menggunakan mouse atau sentuhan. Posisi serta buka/tutup notes berlaku lokal pada masing-masing presenter; isi tetap dibagikan kepada semua presenter. Posisi dipertahankan ketika notes ditutup dan dibuka kembali dalam halaman yang sama, dan dibatasi agar tetap terjangkau di layar. Host tidak menerima isi notes dan tidak dapat membukanya dengan W.
+
+
+Guest dapat memilih slide dan menjalankan animasi sendiri. Guest melihat coretan
+pada slide yang sedang dibuka, tetapi tidak dapat mengubah sesi bersama, menggambar,
+atau membaca notes. Host dan presenter masuk dengan password sesi. Server memeriksa
+password dan menerbitkan token per peran, berlaku 12 jam untuk menyambung kembali.
+Token hanya disimpan dalam memori halaman dan dikirim lewat subprotokol WebSocket.
+Password tidak disertakan dalam aset publik. Setelah refresh, masukkan password lagi.
+
+Untuk tes integrasi, isi variabel lingkungan ALIN_PASSWORD dengan password sesi,
+dan arahkan ALIN_URL ke server pengujian terpisah. Jalankan
+`node --test --test-concurrency=1 tests/*.test.mjs`.

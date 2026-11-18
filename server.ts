@@ -8,7 +8,7 @@ import { sessionRoute } from "./session-server.ts";
 const publicDir = fromFileUrl(new URL("./public", import.meta.url));
 const port = Number(Deno.env.get("PORT") ?? 8000);
 
-Deno.serve({ port }, async (request) => {
+Deno.serve({ port, hostname: Deno.env.get("HOST") ?? "0.0.0.0" }, async (request) => {
   const session = await sessionRoute(request);
   if (session) return session;
   const file = await serveDir(request, { fsRoot: publicDir, quiet: true });

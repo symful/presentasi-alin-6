@@ -1,0 +1,24 @@
+[Unit]
+Description=ALIN presentation and live collaboration
+After=network-online.target
+Wants=network-online.target
+[Service]
+User=mater
+Group=mater
+WorkingDirectory=/opt/mater/current
+Environment=HOST=127.0.0.1
+Environment=PORT=8000
+Environment=DENO_DIR=/var/cache/mater
+Environment=ALIN_KV_PATH=/var/lib/mater/shared-v2.sqlite
+Environment=PUBLIC_URL=https://mater.kataakhtarnamatimnyaapayah.my.id
+ExecStart=/usr/local/bin/deno run --cached-only --allow-net --allow-read --allow-env --allow-write=/var/lib/mater server.ts
+Restart=always
+RestartSec=2
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+ReadWritePaths=/var/lib/mater /var/cache/mater
+UMask=0077
+[Install]
+WantedBy=multi-user.target
